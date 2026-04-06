@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<meta name="theme-color" content="#0a1628"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-title" content="হিসাব"/>
+<title>হিসাব — Daily Expense Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+--green:#1D9E75;--warn:#EF9F27;--danger:#E24B4A;
+--bg:#0a1628;--bg2:#0f2040;--bg3:#0d1a30;
+--text:#f0f4ff;--text2:#64748b;--text3:#334155;
+--border:rgba(255,255,255,0.08);--border2:rgba(255,255,255,0.15);
+--r:10px;--rl:16px
+}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;max-width:480px;margin:0 auto}
+.app{padding:12px 14px 80px}
+
+/* Topbar */
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;padding-top:8px}
+.appname{font-size:20px;font-weight:700;color:var(--green)}
+.topright{display:flex;gap:6px;align-items:center}
+.mnav{display:flex;align-items:center;gap:4px}
+.nbtn{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:5px 11px;cursor:pointer;font-size:12px;color:var(--text2)}
+.mlbl{font-size:13px;font-weight:700;color:var(--text);min-width:95px;text-align:center}
+.iconbtn{padding:5px 8px;border:1px solid var(--border);border-radius:var(--r);cursor:pointer;background:var(--bg2);color:var(--text2);font-size:14px;line-height:1}
+.lbtn{padding:5px 10px;border:1px solid var(--border);border-radius:20px;font-size:11px;cursor:pointer;background:var(--bg2);color:var(--text2)}
+.spin{animation:sp 0.6s linear}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+/* Tabs */
+.tabs{display:flex;margin-bottom:16px;border:1px solid var(--border);border-radius:var(--rl);overflow:hidden;background:var(--bg2)}
+.tab{flex:1;padding:10px 2px;text-align:center;font-size:12px;font-weight:600;cursor:pointer;color:var(--text2);border:none;background:none;border-right:1px solid var(--border);white-space:nowrap;transition:all 0.2s}
+.tab:last-child{border-right:none}
+.tab.active{background:var(--bg);color:var(--green);font-weight:700}
+
+/* Views */
+.view{display:none}.view.active{display:block}
+
+/* Hero Card */
+.hero{border-radius:20px;padding:20px;margin-bottom:16px;background:linear-gradient(135deg,#3d1f8a 0%,#251550 50%,#0f0a28 100%);border:1px solid rgba(175,169,236,0.2)}
+.hero-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px}
+.hero-label{font-size:11px;color:rgba(255,255,255,0.45);margin-bottom:6px}
+.hero-amount{font-size:28px;font-weight:700;color:#fff;letter-spacing:-0.5px}
+.hero-badge{background:rgba(175,169,236,0.15);border:1px solid rgba(175,169,236,0.3);border-radius:10px;padding:6px 10px;text-align:center;flex-shrink:0;margin-left:12px}
+.hero-pct{font-size:18px;font-weight:700;color:#CECBF6;line-height:1}
+.hero-pct-lbl{font-size:9px;color:rgba(255,255,255,0.4);font-weight:600;margin-top:2px}
+.hero-bar-wrap{height:6px;background:rgba(255,255,255,0.08);border-radius:3px;margin-bottom:16px;overflow:hidden}
+.hero-bar{height:100%;border-radius:3px;transition:width 0.4s}
+.hb-ok{background:linear-gradient(90deg,#534AB7,#7F77DD,#AFA9EC);box-shadow:0 0 12px rgba(83,74,183,0.6)}
+.hb-warn{background:linear-gradient(90deg,#7F77DD,#EF9F27)}
+.hb-danger{background:linear-gradient(90deg,#7F77DD,#E24B4A)}
+.hero-stats{display:flex}
+.hs-l{flex:1;padding-right:14px;border-right:1px solid rgba(255,255,255,0.08)}
+.hs-r{flex:1;padding-left:14px}
+.hs-lbl{font-size:10px;color:rgba(255,255,255,0.35);margin-bottom:3px}
+.hs-val{font-size:15px;font-weight:700}
+.hs-sub{font-size:10px;color:rgba(255,255,255,0.35);margin-top:2px}
+
+/* Insights */
+.insights{display:flex;flex-direction:column;gap:7px;margin-bottom:13px}
+.ic{border-radius:var(--r);padding:10px 13px;font-size:12px;line-height:1.5;border:1px solid}
+.ic-ok{background:#0a2e20;border-color:#1D9E75;color:#5DCAA5}
+.ic-warn{background:#2e1f00;border-color:#EF9F27;color:#FAC775}
+.ic-danger{background:#2e0a0a;border-color:#E24B4A;color:#F09595}
+.ic-info{background:#08203a;border-color:#378ADD;color:#85B7EB}
+.ic-lbl{font-weight:700;margin-bottom:2px}
+.ic-sub{opacity:0.85;font-size:11px}
+
+/* Add Card */
+.acard{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:16px;margin-bottom:13px}
+.inp{width:100%;padding:10px 13px;border:1px solid var(--border);border-radius:var(--r);font-size:14px;background:var(--bg);color:var(--text);outline:none;font-family:inherit}
+input[type="date"].inp{-webkit-appearance:none;appearance:none;min-height:44px;padding-right:10px}
+input[type="date"].inp::-webkit-calendar-picker-indicator{filter:invert(0.5);cursor:pointer;flex-shrink:0}
+.inp:focus{border-color:var(--green)}
+.cats{display:flex;flex-wrap:wrap;gap:7px}
+.cb{padding:5px 11px;border:1px solid var(--border);border-radius:20px;font-size:12px;cursor:pointer;background:var(--bg);color:var(--text2);transition:all 0.15s}
+.cb.active{background:var(--green);border-color:var(--green);color:#fff}
+.cadd{display:flex;gap:6px}
+.cinp{flex:1;padding:6px 11px;border:1px solid var(--border);border-radius:20px;font-size:12px;background:var(--bg);color:var(--text);outline:none;font-family:inherit}
+.sbtn{padding:6px 13px;border:1px solid var(--border);border-radius:20px;font-size:12px;cursor:pointer;background:var(--bg);color:var(--text2);font-family:inherit}
+.gbtn{width:100%;padding:11px;background:var(--green);color:#fff;border:none;border-radius:var(--r);font-size:14px;font-weight:700;cursor:pointer;font-family:inherit}
+.gbtn:active{opacity:0.85}
+.suggest-list{display:flex;flex-wrap:wrap;gap:5px}
+.sc{padding:4px 9px;border:1px solid var(--border);border-radius:20px;font-size:11px;cursor:pointer;background:var(--bg);color:var(--text2)}
+
+/* Section title */
+.sec{font-size:10px;font-weight:700;color:var(--text2);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.08em}
+
+/* Day list */
+.dl{display:flex;flex-direction:column;gap:7px;margin-bottom:14px}
+.dc{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);overflow:hidden}
+.dh{display:flex;justify-content:space-between;align-items:center;padding:10px 13px;cursor:pointer;user-select:none}
+.dh:active{opacity:0.8}
+.dlbl{font-size:13px;font-weight:700;color:var(--text)}
+.dtot{font-size:13px;font-weight:700;color:var(--text)}
+.dtot.z{color:var(--text3)}
+.des{border-top:1px solid var(--border);padding:8px 13px;display:flex;flex-direction:column;gap:6px}
+.er{display:flex;justify-content:space-between;align-items:center;font-size:12px}
+.el{display:flex;align-items:center;gap:5px;flex:1;min-width:0}
+.ecat{font-size:10px;padding:2px 7px;border-radius:10px;background:var(--bg);color:var(--text2);flex-shrink:0}
+.enote{color:var(--text2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.eamt{font-weight:700;color:var(--text);flex-shrink:0;margin-right:4px}
+.edel{background:none;border:none;cursor:pointer;color:var(--text3);font-size:11px;padding:3px 5px}
+
+/* Cards */
+.scard{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:14px 16px;margin-bottom:13px}
+
+/* Summary */
+.crow{display:flex;gap:8px;margin-bottom:11px}
+.cbox{flex:1;background:var(--bg);border-radius:var(--r);padding:10px 11px;text-align:center}
+.cv{font-size:15px;font-weight:700;color:var(--text)}
+.cl{font-size:10px;color:var(--text2);margin-top:2px}
+.cdiff{text-align:center;font-size:13px;margin-bottom:11px;font-weight:500}
+.catrow{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+.cname{font-size:12px;color:var(--text2);width:80px;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ctrack{flex:1;height:5px;background:var(--border);border-radius:3px;overflow:hidden}
+.cfill{height:100%;border-radius:3px}
+.camt{font-size:12px;font-weight:700;color:var(--text);min-width:62px;text-align:right}
+.tag{font-size:10px;padding:2px 6px;border-radius:8px;margin-left:3px}
+.tok{background:#0a2e20;color:#5DCAA5}.twarn{background:#2e0a0a;color:#F09595}
+.ebtn{width:100%;padding:9px;background:var(--bg);border:1px solid var(--border);border-radius:var(--r);font-size:12px;cursor:pointer;color:var(--text);margin-bottom:8px;font-family:inherit}
+
+/* Chips */
+.chip{padding:6px 11px;border:1px solid var(--border);border-radius:20px;font-size:12px;cursor:pointer;background:var(--bg);color:var(--text2);margin:0 5px 5px 0;font-family:inherit}
+.chip.on{background:var(--green);border-color:var(--green);color:#fff}
+
+/* Plan */
+.plan-item{display:flex;align-items:center;gap:8px;padding:10px 0;border-bottom:1px solid var(--border)}
+.plan-item:last-child{border-bottom:none}
+.pi-inp{width:95px;padding:6px 9px;border:1px solid var(--border);border-radius:var(--r);font-size:13px;background:var(--bg);color:var(--text);text-align:right;outline:none;font-family:inherit}
+.pi-inp:focus{border-color:var(--green)}
+.plan-total{display:flex;justify-content:space-between;align-items:center;padding:10px 0 4px;font-size:14px;font-weight:700;color:var(--text)}
+.advice-box{background:#08203a;border:1px solid #378ADD;border-radius:var(--r);padding:11px 13px;font-size:12px;color:#85B7EB;line-height:1.6;margin-bottom:12px}
+.abtn{width:100%;padding:11px;background:var(--bg);border:1px solid var(--green);border-radius:var(--r);font-size:13px;font-weight:700;cursor:pointer;color:var(--green);margin-bottom:8px;font-family:inherit}
+.rbtn2{width:100%;padding:9px;background:none;border:1px solid var(--border);border-radius:var(--r);font-size:12px;cursor:pointer;color:var(--text2);font-family:inherit}
+
+/* Modal */
+.modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:1000;align-items:flex-end;justify-content:center}
+.modal-overlay.open{display:flex}
+.modal{background:var(--bg2);border-radius:20px 20px 0 0;padding:20px 16px 40px;width:100%;max-width:480px;border-top:1px solid var(--border)}
+.modal-title{font-size:15px;font-weight:700;color:var(--text);margin-bottom:14px;text-align:center}
+.del-btn{width:100%;padding:10px;background:none;border:1px solid var(--danger);border-radius:var(--r);font-size:13px;cursor:pointer;color:#F09595;margin-top:7px;font-family:inherit}
+
+/* Onboarding */
+.ob-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:var(--bg);z-index:2000;overflow-y:auto}
+.ob-overlay.show{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 24px}
+.ob-title{font-size:26px;font-weight:700;color:var(--text);margin-bottom:8px;text-align:center}
+.ob-sub{font-size:14px;color:var(--text2);text-align:center;margin-bottom:32px;line-height:1.6}
+.ob-steps{width:100%;max-width:340px;display:flex;flex-direction:column;gap:14px;margin-bottom:32px}
+.ob-step{display:flex;align-items:center;gap:14px;background:var(--bg2);border-radius:var(--rl);padding:14px 16px;border:1px solid var(--border)}
+.ob-num{width:32px;height:32px;border-radius:50%;background:var(--green);color:#fff;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ob-step-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px}
+.ob-step-desc{font-size:12px;color:var(--text2)}
+.ob-btn{width:100%;max-width:340px;padding:14px;background:var(--green);color:#fff;border:none;border-radius:var(--rl);font-size:15px;font-weight:700;cursor:pointer;font-family:inherit}
+.ob-skip{margin-top:12px;font-size:12px;color:var(--text3);cursor:pointer;text-decoration:underline}
+
+/* Month summary */
+.ms-row{display:flex;justify-content:space-between;font-size:12px;margin-bottom:6px}
+.ms-label{color:var(--text2)}.ms-val{font-weight:700;color:var(--text)}
+
+/* Goal buckets */
+.bucket-item{margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.bucket-item:last-child{border-bottom:none}
+
+/* Install banner */
+.install-banner{display:none;background:var(--green);color:#fff;padding:10px 14px;border-radius:var(--r);margin-bottom:12px;font-size:12px;cursor:pointer;text-align:center;font-weight:600}
+
+.lbl{font-size:12px;color:var(--text2);margin-bottom:6px}
+.row{display:flex;gap:7px;margin-bottom:8px}
+.err{font-size:11px;color:#F09595;margin-bottom:8px;display:none;padding:8px 12px;background:#2e0a0a;border-radius:var(--r);border:1px solid var(--danger)}
+.btrack{height:6px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden}
+.bfill{height:100%;border-radius:3px;transition:width 0.4s}
+.bok{background:var(--green);box-shadow:0 0 8px rgba(29,158,117,0.5)}
+.bwarn{background:var(--warn)}.bdanger{background:var(--danger)}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+</head>
+<body>
+<div class="app">
+<div id="installBanner" class="install-banner" onclick="installApp()">📲 Home screen-এ install করো</div>
+
+<div class="topbar">
+  <div style="display:flex;align-items:center;gap:8px">
+    <svg width="30" height="30" viewBox="0 0 120 120" style="border-radius:8px;flex-shrink:0">
+      <rect width="120" height="120" rx="28" fill="#0F6E56"/>
+      <rect x="8" y="8" width="104" height="104" rx="22" fill="#1D9E75"/>
+      <line x1="24" y1="85" x2="96" y2="85" stroke="white" stroke-width="2.5" stroke-opacity="0.4" stroke-linecap="round"/>
+      <line x1="24" y1="93" x2="74" y2="93" stroke="white" stroke-width="2.5" stroke-opacity="0.25" stroke-linecap="round"/>
+      <text x="60" y="72" font-family="Georgia,serif" font-size="52" font-weight="700" text-anchor="middle" fill="white">৳</text>
+    </svg>
+    <span class="appname" id="appName">হিসাব</span>
+  </div>
+  <div class="topright">
+    <div class="mnav">
+      <button class="nbtn" onclick="chM(-1)">&#8592;</button>
+      <span class="mlbl" id="mLbl"></span>
+      <button class="nbtn" onclick="chM(1)">&#8594;</button>
+    </div>
+    <button class="iconbtn" id="rfBtn" onclick="doRefresh()">&#8635;</button>
+    <button class="lbtn" id="lBtn" onclick="togLang()"></button>
+  </div>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="swTab('daily')" id="t0"></button>
+  <button class="tab" onclick="swTab('summary')" id="t1"></button>
+  <button class="tab" onclick="swTab('goals')" id="t2"></button>
+  <button class="tab" onclick="swTab('planner')" id="t3"></button>
+  <button class="tab" onclick="swTab('settings')" id="t4"></button>
+</div>
+
+<!-- DAILY -->
+<div id="vw-daily" class="view active">
+  <div class="hero">
+    <div class="hero-top">
+      <div>
+        <div class="hero-label" id="hLabel"></div>
+        <div class="hero-amount" id="hAmount">৳0</div>
+      </div>
+      <div class="hero-badge">
+        <div class="hero-pct" id="hPct">0%</div>
+        <div class="hero-pct-lbl">USED</div>
+      </div>
+    </div>
+    <div class="hero-bar-wrap"><div class="hero-bar hb-ok" id="hBar" style="width:0%"></div></div>
+    <div class="hero-stats">
+      <div class="hs-l">
+        <div class="hs-lbl" id="hSpentLbl"></div>
+        <div class="hs-val" id="hSpent" style="color:#F09595">৳0</div>
+      </div>
+      <div class="hs-r">
+        <div class="hs-lbl" id="hLeftLbl"></div>
+        <div class="hs-val" id="hLeft" style="color:#CECBF6">৳0</div>
+        <div class="hs-sub" id="hLeftSub"></div>
+      </div>
+    </div>
+  </div>
+  <div class="insights" id="insD"></div>
+  <div class="acard">
+    <div style="margin-bottom:12px"><input class="inp" type="number" id="amtI" min="0" inputmode="numeric" onkeydown="if(event.key==='Enter'){event.preventDefault();addExp();}"/></div>
+    <div class="suggest-list" id="suggestList" style="margin-bottom:6px"></div>
+    <div style="margin-bottom:12px"><input class="inp" type="text" id="noteI" oninput="showSugg(this.value)"/></div>
+    <div style="margin-bottom:14px"><input class="inp" type="date" id="dateI"/></div>
+    <div class="cats" id="catBtns" style="margin-bottom:10px"></div>
+    <div class="cadd" style="margin-bottom:12px">
+      <input class="cinp" type="text" id="newCat"/>
+      <button class="sbtn" onclick="addCat()" id="btnAddCat"></button>
+    </div>
+    <button class="gbtn" onclick="addExp()" id="btnAdd"></button>
+  </div>
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+    <div class="sec" id="lblDlist" style="margin-bottom:0"></div>
+    <button onclick="togEmpty()" id="emptyBtn" style="font-size:11px;color:var(--text2);background:none;border:1px solid var(--border);border-radius:20px;padding:3px 9px;cursor:pointer;font-family:inherit"></button>
+  </div>
+  <div class="dl" id="dayList"></div>
+</div>
+
+<!-- SUMMARY -->
+<div id="vw-summary" class="view">
+  <div class="scard">
+    <div class="brow" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+      <span style="font-size:12px;color:var(--text2)" id="lblTots"></span>
+      <span style="font-size:12px;color:var(--text2)">৳<b id="sumSp" style="color:var(--text)">0</b> / ৳<b id="sumBu" style="color:var(--text)">0</b></span>
+    </div>
+    <div class="btrack"><div class="bfill bok" id="sumBar" style="width:0%"></div></div>
+  </div>
+  <div class="sec" id="lblVsl"></div>
+  <div class="crow">
+    <div class="cbox"><div class="cv" id="cmpThis">৳0</div><div class="cl" id="lblThisM"></div></div>
+    <div class="cbox"><div class="cv" id="cmpLast">৳0</div><div class="cl" id="lblLastM"></div></div>
+  </div>
+  <div class="cdiff" id="cmpDiff"></div>
+  <div id="mSummaryCard" style="margin-bottom:12px"></div>
+  <div class="sec" id="lblChartSec"></div>
+  <div style="margin-bottom:16px;position:relative;height:220px" id="spendChartWrap">
+    <canvas id="spendChart"></canvas>
+  </div>
+  <div class="sec" id="lblByCat"></div>
+  <div id="catSum" style="margin-bottom:13px"></div>
+  <button class="ebtn" onclick="expCSV()" id="btnCSV"></button>
+</div>
+
+<!-- GOALS -->
+<div id="vw-goals" class="view">
+  <div class="sec" id="lblGoalBuckets"></div>
+  <div class="scard">
+    <div class="lbl" id="lblBucketDesc"></div>
+    <div id="bucketsList" style="margin-bottom:10px"></div>
+    <div style="display:flex;gap:7px">
+      <input class="inp" type="text" id="bucketName" style="flex:1"/>
+      <input class="inp" type="number" id="bucketAmt" style="width:95px" inputmode="numeric"/>
+      <button class="sbtn" onclick="addBucket()" id="btnAddBucket"></button>
+    </div>
+  </div>
+  <div class="sec" id="lblSavGoal"></div>
+  <div class="scard">
+    <div class="lbl" id="lblSavTarget"></div>
+    <div style="display:flex;gap:7px">
+      <input class="inp" type="number" id="savGI" style="flex:1" inputmode="numeric"/>
+      <button class="sbtn" onclick="saveSG()" id="btnSaveSG"></button>
+    </div>
+    <div id="savRes" style="margin-top:9px"></div>
+  </div>
+  <div class="sec" id="lblCatLim"></div>
+  <div class="scard">
+    <div style="display:flex;gap:7px;margin-bottom:9px">
+      <select id="limSel" style="flex:1;padding:8px 10px;border:1px solid var(--border);border-radius:var(--r);font-size:12px;background:var(--bg);color:var(--text);font-family:inherit"></select>
+      <input class="inp" type="number" id="limAmt" style="width:95px" inputmode="numeric"/>
+      <button class="sbtn" onclick="saveLim()" id="btnSetLim"></button>
+    </div>
+    <div id="limList"></div>
+  </div>
+</div>
+
+<!-- PLANNER -->
+<div id="vw-planner" class="view">
+  <div id="pfForm">
+    <div class="scard">
+      <div class="sec" id="lblMyInc"></div>
+      <div class="lbl" id="lblIncAmt"></div>
+      <input class="inp" type="number" id="pInc" inputmode="numeric"/>
+    </div>
+    <div class="scard">
+      <div class="sec" id="lblFamSec"></div>
+      <div class="lbl" id="lblDep"></div>
+      <div style="display:flex;flex-wrap:wrap;margin-bottom:10px" id="depC"></div>
+      <div class="lbl" id="lblHou"></div>
+      <div style="display:flex;flex-wrap:wrap" id="houC"></div>
+    </div>
+    <div class="scard">
+      <div class="sec" id="lblDbtSec"></div>
+      <div class="lbl" id="lblDbtQ"></div>
+      <div style="display:flex;flex-wrap:wrap;margin-bottom:8px" id="dbtC"></div>
+      <div id="dbtBox" style="display:none">
+        <div class="lbl" id="lblDbtAmt"></div>
+        <input class="inp" type="number" id="dbtAmtI" inputmode="numeric"/>
+      </div>
+    </div>
+    <div class="scard">
+      <div class="sec" id="lblGoalSec"></div>
+      <div class="lbl" id="lblGoalQ"></div>
+      <div style="display:flex;flex-wrap:wrap" id="goalC"></div>
+    </div>
+    <div class="err" id="pErr"></div>
+    <button class="gbtn" onclick="makePlan()" id="btnMakePlan"></button>
+  </div>
+  <div id="pfResult" style="display:none">
+    <div class="sec" id="lblEditPlan"></div>
+    <div class="advice-box" id="planAdvice"></div>
+    <div class="scard" style="padding:14px 16px">
+      <div id="planItems"></div>
+      <div class="plan-total"><span id="lblTotal2"></span><span id="planTotVal"></span></div>
+      <div style="margin-top:5px">
+        <div class="btrack"><div class="bfill bok" id="planBar" style="width:0%"></div></div>
+        <div style="font-size:10px;color:var(--text3);margin-top:3px" id="planRemain"></div>
+      </div>
+    </div>
+    <button class="abtn" onclick="applyPlan()" id="btnApply"></button>
+    <button class="rbtn2" onclick="resetPlan()" id="btnReset"></button>
+  </div>
+</div>
+
+<!-- SETTINGS -->
+<div id="vw-settings" class="view">
+  <div class="sec" id="lblSetBud"></div>
+  <div class="scard">
+    <div style="font-size:12px;font-weight:700;color:var(--green);margin-bottom:8px" id="lblBudMonth"></div>
+    <div style="display:flex;gap:7px">
+      <input class="inp" type="number" id="budI" style="flex:1" inputmode="numeric"/>
+      <button class="sbtn" onclick="saveBud()" id="btnSavBud"></button>
+    </div>
+    <div style="font-size:11px;color:var(--text3);margin-top:6px" id="lblBudNote"></div>
+  </div>
+  <div class="sec" id="lblFixSec"></div>
+  <div class="scard">
+    <div style="display:flex;gap:7px;margin-bottom:8px">
+      <input class="inp" type="text" id="fixNm" style="flex:1"/>
+      <input class="inp" type="number" id="fixAm" style="width:95px" inputmode="numeric"/>
+    </div>
+    <button class="gbtn" onclick="addFixed()" id="btnAddFix"></button>
+  </div>
+  <div id="fixList" style="display:flex;flex-direction:column;gap:5px;margin-bottom:13px"></div>
+  <div class="sec" id="lblImpSec"></div>
+  <div class="scard">
+    <div class="lbl" id="lblImpInfo"></div>
+    <label style="display:block;width:100%;padding:10px;background:var(--bg);border:1px dashed var(--border2);border-radius:var(--r);font-size:13px;cursor:pointer;text-align:center;color:var(--text2);font-family:inherit">
+      <input type="file" accept=".csv" id="csvFile" style="display:none" onchange="importCSV(this)"/>
+      <span id="lblImpBtn">📂 CSV file choose করো</span>
+    </label>
+    <div id="impResult" style="margin-top:8px;font-size:12px"></div>
+  </div>
+  <div class="sec" id="lblDngr"></div>
+  <div class="scard">
+    <button class="ebtn" onclick="clearAll()" style="color:#F09595;margin-bottom:0" id="btnClr"></button>
+  </div>
+</div>
+</div>
+
+<!-- EDIT MODAL -->
+<div class="modal-overlay" id="editModal">
+  <div class="modal">
+    <div class="modal-title" id="editTitle">Edit expense</div>
+    <input class="inp" type="number" id="editAmt" inputmode="numeric" style="margin-bottom:10px"/>
+    <input class="inp" type="text" id="editNote" style="margin-bottom:10px"/>
+    <input class="inp" type="date" id="editDate" style="margin-bottom:10px;max-width:100%;-webkit-appearance:none;appearance:none"/>
+    <div id="editCats" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px"></div>
+    <button class="gbtn" onclick="saveEdit()" id="editSaveBtn" style="margin-bottom:7px"></button>
+    <button class="del-btn" onclick="delFromEdit()" id="editDelBtn"></button>
+    <button class="rbtn2" onclick="closeEdit()" id="editCancelBtn" style="margin-top:7px"></button>
+  </div>
+</div>
+
+<!-- BUCKET MODAL -->
+<div class="modal-overlay" id="bucketModal">
+  <div class="modal">
+    <div class="modal-title" id="bucketModalTitle">কত টাকা যোগ করবো?</div>
+    <input type="hidden" id="bucketModalId"/>
+    <input class="inp" type="number" id="bucketModalAmt" inputmode="numeric" style="margin-bottom:10px"/>
+    <button class="gbtn" onclick="confirmBucketAdd()" style="margin-bottom:8px" id="bucketModalOk"></button>
+    <button class="rbtn2" onclick="closeBucketModal()" id="bucketModalCancel"></button>
+  </div>
+</div>
+
+<!-- ONBOARDING -->
+<div class="ob-overlay" id="obOverlay">
+  <div style="margin-bottom:20px">
+    <svg width="72" height="72" viewBox="0 0 120 120" style="border-radius:18px">
+      <rect width="120" height="120" rx="28" fill="#0F6E56"/>
+      <rect x="8" y="8" width="104" height="104" rx="22" fill="#1D9E75"/>
+      <text x="60" y="72" font-family="Georgia,serif" font-size="52" font-weight="700" text-anchor="middle" fill="white">৳</text>
+    </svg>
+  </div>
+  <div class="ob-title" id="obTitle">হিসাবে স্বাগতম!</div>
+  <div class="ob-sub" id="obSub">তোমার প্রতিদিনের খরচ track করো,<br/>budget মেনে চলো, সঞ্চয় বাড়াও।</div>
+  <div class="ob-steps">
+    <div class="ob-step"><div class="ob-num">১</div><div><div class="ob-step-title" id="obS1T">Budget সেট করো</div><div class="ob-step-desc" id="obS1D">Settings-এ গিয়ে মাসিক budget দাও</div></div></div>
+    <div class="ob-step"><div class="ob-num">২</div><div><div class="ob-step-title" id="obS2T">খরচ যোগ করো</div><div class="ob-step-desc" id="obS2D">Daily tab-এ amount লিখে Add চাপো</div></div></div>
+    <div class="ob-step"><div class="ob-num">৩</div><div><div class="ob-step-title" id="obS3T">Summary দেখো</div><div class="ob-step-desc" id="obS3D">কোথায় কত গেলো সব এক জায়গায়</div></div></div>
+  </div>
+  <button class="ob-btn" onclick="finishOb()" id="obBtn">শুরু করো</button>
+  <div class="ob-skip" onclick="finishOb()" id="obSkip">skip করো</div>
+</div>
+
+<script>
+const MEN=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const MBN=['জানুয়ারি','ফেব্রুয়ারি','মার্চ','এপ্রিল','মে','জুন','জুলাই','আগস্ট','সেপ্টেম্বর','অক্টোবর','নভেম্বর','ডিসেম্বর'];
+const DEN=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const DBN=['রবি','সোম','মঙ্গল','বুধ','বৃহঃ','শুক্র','শনি'];
+const TX={
+en:{app:'Hishab',daily:'Daily',summary:'Summary',goals:'Goals',planner:'Planner',settings:'Settings',noexp:'No expense',lang:'বাংলা',more:'More than last month',less:'Less than last month',same:'Same as last month',safelim:'Safe daily limit',budused:'budget used',dleft:'days left',topcat:'Top category',savedsofar:'Saved so far',over:'Over budget',under:'Within budget',ontrack:'On track',catover:'Over',catok:'OK',nodata:'No data',remaining:'remaining',depOpts:['Just me','1 person','2-3 people','4+ people'],houOpts:['Renting','Own home','With family'],dbtOpts:['None','Small debt','Large debt'],goalOpts:['Save money','Pay off debt','Cover expenses','Invest']},
+bn:{app:'হিসাব',daily:'দৈনিক',summary:'সারসংক্ষেপ',goals:'লক্ষ্য',planner:'প্ল্যানার',settings:'সেটিংস',noexp:'কোনো খরচ নেই',lang:'English',more:'গত মাসের চেয়ে বেশি',less:'গত মাসের চেয়ে কম',same:'গত মাসের মতোই',safelim:'আজ সর্বোচ্চ',budused:'বাজেট শেষ',dleft:'দিন বাকি',topcat:'সবচেয়ে বেশি',savedsofar:'এখন পর্যন্ত বাঁচলো',over:'বাজেট ছাড়িয়েছে',under:'বাজেটের মধ্যে',ontrack:'সঠিক পথে',catover:'সীমা ছাড়িয়েছে',catok:'ঠিক আছে',nodata:'কোনো ডেটা নেই',remaining:'বাকি',depOpts:['শুধু আমি','১ জন','২-৩ জন','৪+ জন'],houOpts:['ভাড়া বাসায়','নিজের বাসা','পরিবারের সাথে'],dbtOpts:['নেই','আছে (ছোট)','আছে (বড়)'],goalOpts:['সঞ্চয় করা','ঋণ শোধ','খরচ মেটানো','বিনিয়োগ']}
+};
+const DEFCATS=['Food','Transport','Bills','Family','Bike','Personal','Other'];
+let ST={budget:0,budgets:{},fixedCosts:[],categories:[...DEFCATS],expenses:{},curM:new Date().getMonth(),curY:new Date().getFullYear(),selCat:'Other',lang:'bn',savGoal:0,catLimits:{},goalBuckets:[],pSel:{dep:0,hou:'rent',dbt:'none',goal:'save'}};
+try{const s=localStorage.getItem('hishab_app');if(s)ST={...ST,...JSON.parse(s)};}catch(e){}
+let planData=null,planInc=0,showEmpty=false,editKey=null,editId=null,deferredPrompt=null;
+
+function sv(){try{localStorage.setItem('hishab_app',JSON.stringify(ST));}catch(e){}}
+function t(k){return TX[ST.lang][k]||k;}
+function fmt(n){return '৳'+Math.round(n).toLocaleString();}
+function gk(y,m,d){return y+'-'+String(m+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');}
+function dim(y,m){return new Date((y??ST.curY),(m??ST.curM)+1,0).getDate();}
+function isCur(){const n=new Date();return n.getMonth()===ST.curM&&n.getFullYear()===ST.curY;}
+function mKey(y,m){return (y??ST.curY)+'-'+String((m??ST.curM)+1).padStart(2,'0');}
+function getBudget(y,m){const k=mKey(y,m);return ST.budgets[k]??ST.budget??0;}
+function setBudget(v,y,m){const k=mKey(y,m);ST.budgets[k]=v;ST.budget=v;}
+function varExp(y,m){y=y??ST.curY;m=m??ST.curM;const p=y+'-'+String(m+1).padStart(2,'0');let tot=0;Object.keys(ST.expenses).forEach(k=>{if(k.startsWith(p))(ST.expenses[k]||[]).forEach(e=>tot+=e.amount);});return tot;}
+function fixTot(){return ST.fixedCosts.reduce((s,f)=>s+f.amount,0);}
+function mTot(y,m){return varExp(y,m)+fixTot();}
+function todTot(){if(!isCur())return 0;const n=new Date();return(ST.expenses[gk(ST.curY,ST.curM,n.getDate())]||[]).reduce((s,e)=>s+e.amount,0);}
+function catTots(y,m){y=y??ST.curY;m=m??ST.curM;const p=y+'-'+String(m+1).padStart(2,'0'),ct={};Object.keys(ST.expenses).forEach(k=>{if(k.startsWith(p))(ST.expenses[k]||[]).forEach(e=>{ct[e.cat]=(ct[e.cat]||0)+e.amount;});});const fk=ST.lang==='en'?'Fixed':'ফিক্সড';ST.fixedCosts.forEach(f=>{ct[fk]=(ct[fk]||0)+f.amount;});return ct;}
+
+// Safe DOM setter
+function _s(id,v){const e=document.getElementById(id);if(e)e.textContent=v;}
+function _h(id,v){const e=document.getElementById(id);if(e)e.innerHTML=v;}
+function _p(id,v){const e=document.getElementById(id);if(e)e.placeholder=v;}
+
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;const b=document.getElementById('installBanner');if(b)b.style.display='block';});
+function installApp(){if(deferredPrompt){deferredPrompt.prompt();deferredPrompt.userChoice.then(()=>{deferredPrompt=null;const b=document.getElementById('installBanner');if(b)b.style.display='none';});}}
+
+function doRefresh(){const btn=document.getElementById('rfBtn');if(btn)btn.classList.add('spin');try{const s=localStorage.getItem('hishab_app');if(s)ST={...ST,...JSON.parse(s)};}catch(e){}render();setTimeout(()=>{if(btn)btn.classList.remove('spin');},600);}
+
+function togLang(){ST.lang=ST.lang==='en'?'bn':'en';sv();render();rGoals();rSettings();rPlanner();}
+
+function swTab(name){
+  ['daily','summary','goals','planner','settings'].forEach((n,i)=>{
+    const b=document.getElementById('t'+i);if(b)b.classList.toggle('active',n===name);
+    const v=document.getElementById('vw-'+n);if(v)v.classList.toggle('active',n===name);
+  });
+  if(name==='summary')rSummary();
+  if(name==='goals')rGoals();
+  if(name==='settings')rSettings();
+  if(name==='planner')rPlanner();
+}
+
+function chM(d){ST.curM+=d;if(ST.curM>11){ST.curM=0;ST.curY++;}if(ST.curM<0){ST.curM=11;ST.curY--;}render();}
+
+function buildIns(){
+  const ins=[];const bud=getBudget();const tot=mTot();
+  const dIM=dim();const today=new Date().getDate();
+  const dL=isCur()?dIM-today:0;const rem=bud-tot;const pct=bud>0?tot/bud*100:0;
+  if(bud<=0){ins.push({tp:'info',l:ST.lang==='en'?'Set your monthly budget first':'প্রথমে মাসিক বাজেট সেট করো',s:ST.lang==='en'?'Go to Settings':'Settings-এ যাও'});return ins;}
+  if(isCur()&&dL>0){const sdl=Math.max(0,rem/dL);if(sdl<=0)ins.push({tp:'danger',l:t('safelim')+': ৳0',s:dL+' '+t('dleft')});else if(sdl<800)ins.push({tp:'warn',l:t('safelim')+': '+fmt(sdl),s:dL+' '+t('dleft')});else ins.push({tp:'ok',l:t('safelim')+': '+fmt(sdl),s:dL+' '+t('dleft')});}
+  if(pct>=85)ins.push({tp:'danger',l:Math.round(pct)+'% '+t('budused'),s:dL+' '+t('dleft')});
+  else if(pct>=70&&dL>8)ins.push({tp:'warn',l:Math.round(pct)+'% '+t('budused'),s:dL+' '+t('dleft')});
+  const ct=catTots();const sorted=Object.entries(ct).sort((a,b)=>b[1]-a[1]);
+  if(sorted.length>0){const top=sorted[0];const share=tot>0?Math.round(top[1]/tot*100):0;ins.push({tp:'info',l:t('topcat')+': '+top[0]+' ('+share+'%)',s:fmt(top[1])});}
+  return ins;
+}
+
+function rIns(id){const el=document.getElementById(id);if(!el)return;el.innerHTML='';buildIns().forEach(i=>{el.innerHTML+='<div class="ic ic-'+i.tp+'"><div class="ic-lbl">'+i.l+'</div>'+(i.s?'<div class="ic-sub">'+i.s+'</div>':'')+'</div>';});}
+
+function setDefaultDate(){const di=document.getElementById('dateI');if(!di)return;const n=new Date();di.value=n.getFullYear()+'-'+String(n.getMonth()+1).padStart(2,'0')+'-'+String(n.getDate()).padStart(2,'0');}
+
+function rCatBtns(){
+  const el=document.getElementById('catBtns');if(el){el.innerHTML='';ST.categories.forEach(c=>{const b=document.createElement('button');b.className='cb'+(ST.selCat===c?' active':'');b.textContent=c;b.onclick=()=>{ST.selCat=c;rCatBtns();};el.appendChild(b);});}
+  const sel=document.getElementById('limSel');if(sel){sel.innerHTML='';ST.categories.forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=c;sel.appendChild(o);});}
+}
+
+function addCat(){const inp=document.getElementById('newCat');if(!inp)return;const v=inp.value.trim();if(v&&!ST.categories.includes(v)){ST.categories.push(v);ST.selCat=v;inp.value='';sv();rCatBtns();}}
+
+function addExp(){
+  const amtEl=document.getElementById('amtI');const noteEl=document.getElementById('noteI');const dateEl=document.getElementById('dateI');
+  if(!amtEl)return;
+  const amt=parseFloat(amtEl.value);if(!amt||amt<=0){amtEl.focus();return;}
+  const note=noteEl?noteEl.value.trim():'';
+  let ey=ST.curY,em=ST.curM,ed=1;
+  if(dateEl&&dateEl.value){const pts=dateEl.value.split('-');ey=parseInt(pts[0]);em=parseInt(pts[1])-1;ed=parseInt(pts[2]);}else if(isCur()){ed=new Date().getDate();}
+  const k=gk(ey,em,ed);
+  if(!ST.expenses[k])ST.expenses[k]=[];
+  ST.expenses[k].push({amount:amt,note,cat:ST.selCat,id:Date.now()});
+  amtEl.value='';if(noteEl)noteEl.value='';
+  const sl=document.getElementById('suggestList');if(sl)sl.innerHTML='';
+  sv();render();
+}
+
+function delExp(key,id){ST.expenses[key]=(ST.expenses[key]||[]).filter(e=>e.id!==id);sv();render();}
+
+function getSugg(q){const notes={};Object.values(ST.expenses).forEach(arr=>arr.forEach(e=>{if(e.note)notes[e.note]=(notes[e.note]||0)+1;}));const sorted=Object.entries(notes).sort((a,b)=>b[1]-a[1]).map(x=>x[0]);return q?sorted.filter(n=>n.toLowerCase().includes(q.toLowerCase())).slice(0,6):sorted.slice(0,6);}
+function showSugg(q){const sl=document.getElementById('suggestList');if(!sl)return;const suggs=getSugg(q);sl.innerHTML='';suggs.forEach(s=>{const b=document.createElement('button');b.className='sc';b.textContent=s;b.onclick=()=>{const ni=document.getElementById('noteI');if(ni)ni.value=s;sl.innerHTML='';};sl.appendChild(b);});}
+
+function togEmpty(){showEmpty=!showEmpty;render();}
+
+// Edit modal
+function openEdit(key,id){
+  editKey=key;editId=id;
+  const entries=ST.expenses[key]||[];const e=entries.find(x=>x.id===id);if(!e)return;
+  const ea=document.getElementById('editAmt');if(ea)ea.value=e.amount;
+  const en=document.getElementById('editNote');if(en)en.value=e.note||'';
+  const ed=document.getElementById('editDate');if(ed)ed.value=key;
+  const ec=document.getElementById('editCats');if(ec){ec.innerHTML='';ST.categories.forEach(c=>{const b=document.createElement('button');b.className='cb'+(e.cat===c?' active':'');b.textContent=c;b.onclick=()=>{ec.querySelectorAll('.cb').forEach(x=>x.classList.remove('active'));b.classList.add('active');};ec.appendChild(b);});}
+  const bn=ST.lang==='bn';
+  _s('editTitle',bn?'খরচ সম্পাদনা করো':'Edit expense');
+  _s('editSaveBtn',bn?'সেভ করো':'Save');
+  _s('editDelBtn',bn?'মুছে ফেলো':'Delete');
+  _s('editCancelBtn',bn?'বাতিল':'Cancel');
+  const m=document.getElementById('editModal');if(m)m.classList.add('open');
+}
+function closeEdit(){const m=document.getElementById('editModal');if(m)m.classList.remove('open');editKey=null;editId=null;}
+function saveEdit(){
+  if(!editKey||!editId)return;
+  const ea=document.getElementById('editAmt');const amt=parseFloat(ea?ea.value:0);if(!amt||amt<=0)return;
+  const en=document.getElementById('editNote');const note=en?en.value.trim():'';
+  const ed=document.getElementById('editDate');const newKey=ed&&ed.value?ed.value:editKey;
+  const ec=document.getElementById('editCats');const ac=ec?ec.querySelector('.cb.active'):null;const cat=ac?ac.textContent:ST.selCat;
+  ST.expenses[editKey]=(ST.expenses[editKey]||[]).filter(e=>e.id!==editId);
+  if(!ST.expenses[newKey])ST.expenses[newKey]=[];
+  ST.expenses[newKey].push({amount:amt,note,cat,id:editId});
+  sv();closeEdit();render();
+}
+function delFromEdit(){if(!editKey||!editId)return;ST.expenses[editKey]=(ST.expenses[editKey]||[]).filter(e=>e.id!==editId);sv();closeEdit();render();}
+const em=document.getElementById('editModal');if(em)em.addEventListener('click',function(e){if(e.target===this)closeEdit();});
+
+// Bucket modal
+function openBucketModal(id){const bm=document.getElementById('bucketModal');if(!bm)return;const bi=document.getElementById('bucketModalId');if(bi)bi.value=id;const ba=document.getElementById('bucketModalAmt');if(ba){ba.value='';setTimeout(()=>ba.focus(),100);}const bn=ST.lang==='bn';_s('bucketModalTitle',bn?'কত টাকা যোগ করবো?':'Add savings amount');_s('bucketModalOk',bn?'যোগ করো':'Add');_s('bucketModalCancel',bn?'বাতিল':'Cancel');bm.classList.add('open');}
+function closeBucketModal(){const bm=document.getElementById('bucketModal');if(bm)bm.classList.remove('open');}
+function confirmBucketAdd(){const bi=document.getElementById('bucketModalId');const ba=document.getElementById('bucketModalAmt');if(!bi||!ba)return;const id=parseInt(bi.value);const amt=parseFloat(ba.value);if(amt>0){const b=ST.goalBuckets.find(x=>x.id===id);if(b){b.saved=Math.min(b.target,(b.saved||0)+amt);sv();rGoals();}}closeBucketModal();}
+const bm2=document.getElementById('bucketModal');if(bm2)bm2.addEventListener('click',function(e){if(e.target===this)closeBucketModal();});
+
+// Onboarding
+function checkOb(){if(!localStorage.getItem('hishab_onboarded')){const o=document.getElementById('obOverlay');if(o)o.classList.add('show');}}
+function finishOb(){localStorage.setItem('hishab_onboarded','1');const o=document.getElementById('obOverlay');if(o)o.classList.remove('show');}
+
+// Budget
+function saveBud(){const bi=document.getElementById('budI');if(!bi)return;const v=parseFloat(bi.value);if(v>0){setBudget(v);sv();render();rSettings();}}
+function addFixed(){const nm=document.getElementById('fixNm');const am=document.getElementById('fixAm');if(!nm||!am)return;const name=nm.value.trim();const amt=parseFloat(am.value);if(name&&amt>0){ST.fixedCosts.push({name,amount:amt,id:Date.now()});nm.value='';am.value='';sv();rSettings();render();}}
+function delFixed(id){ST.fixedCosts=ST.fixedCosts.filter(f=>f.id!==id);sv();rSettings();render();}
+
+// Goals
+function saveSG(){const gi=document.getElementById('savGI');if(!gi)return;const v=parseFloat(gi.value);if(v>0){ST.savGoal=v;sv();rGoals();}}
+function saveLim(){const ls=document.getElementById('limSel');const la=document.getElementById('limAmt');if(!ls||!la)return;const cat=ls.value;const amt=parseFloat(la.value);if(cat&&amt>0){ST.catLimits[cat]=amt;la.value='';sv();rGoals();}}
+function delLim(cat){delete ST.catLimits[cat];sv();rGoals();}
+function addBucket(){const bn=document.getElementById('bucketName');const ba=document.getElementById('bucketAmt');if(!bn||!ba)return;const name=bn.value.trim();const amt=parseFloat(ba.value);if(name&&amt>0){ST.goalBuckets.push({name,target:amt,saved:0,id:Date.now()});bn.value='';ba.value='';sv();rGoals();}}
+function delBucket(id){ST.goalBuckets=ST.goalBuckets.filter(b=>b.id!==id);sv();rGoals();}
+
+function rGoals(){
+  _s('lblGoalBuckets',ST.lang==='bn'?'আমার লক্ষ্যসমূহ':'My goals');
+  _s('lblBucketDesc',ST.lang==='bn'?'সঞ্চয়, ভ্রমণ, পড়াশোনা — যেকোনো লক্ষ্য সেট করো':'Set goals for savings, travel, education etc.');
+  _p('bucketName',ST.lang==='bn'?'যেমন: ভ্রমণ, পড়াশোনা':'e.g. Travel, Education');
+  _p('bucketAmt',ST.lang==='bn'?'লক্ষ্য ৳':'Target ৳');
+  _s('btnAddBucket',ST.lang==='bn'?'যোগ':'Add');
+  _s('lblSavGoal',ST.lang==='bn'?'সঞ্চয় লক্ষ্য':'Savings goal');
+  _s('lblSavTarget',ST.lang==='bn'?'লক্ষ্যমাত্রা ৳':'Target savings ৳');
+  _s('btnSaveSG',ST.lang==='bn'?'সেভ':'Save');
+  _s('lblCatLim',ST.lang==='bn'?'ক্যাটাগরি সীমা':'Category limits');
+  _s('btnSetLim',ST.lang==='bn'?'সেট':'Set');
+  if(ST.savGoal>0){const gi=document.getElementById('savGI');if(gi)gi.value=ST.savGoal;}
+  rCatBtns();
+  const sr=document.getElementById('savRes');
+  if(sr){if(ST.savGoal>0&&getBudget()>0){const tot=mTot();const saved=Math.max(0,getBudget()-tot);const pct=Math.min(100,Math.round(saved/ST.savGoal*100));const col=pct>=100?'#1D9E75':pct>=50?'#EF9F27':'#E24B4A';sr.innerHTML='<div style="font-size:12px;color:var(--text2);margin-bottom:5px">'+t('savedsofar')+': <b style="color:var(--text)">'+fmt(saved)+'</b> / '+fmt(ST.savGoal)+'</div><div class="btrack"><div class="bfill" style="width:'+pct+'%;background:'+col+'"></div></div>';}else sr.innerHTML='<div style="font-size:11px;color:var(--text3)">'+t('nodata')+'</div>';}
+  const bl=document.getElementById('bucketsList');
+  if(bl){bl.innerHTML='';if(!ST.goalBuckets.length){bl.innerHTML='<div style="font-size:11px;color:var(--text3);text-align:center;padding:10px">'+t('nodata')+'</div>';}else{ST.goalBuckets.forEach(b=>{const pct=Math.min(100,Math.round((b.saved||0)/b.target*100));const col=pct>=100?'#1D9E75':pct>=50?'#EF9F27':'#378ADD';const div=document.createElement('div');div.className='bucket-item';div.innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><span style="font-size:13px;font-weight:700;color:var(--text)">'+b.name+'</span><div style="display:flex;align-items:center;gap:8px"><span style="font-size:12px;color:var(--text2)">'+fmt(b.saved||0)+' / '+fmt(b.target)+'</span><button onclick="delBucket('+b.id+')" style="background:none;border:none;cursor:pointer;color:var(--text3);font-size:11px">✕</button></div></div><div class="btrack"><div class="bfill" style="width:'+pct+'%;background:'+col+'"></div></div><div style="display:flex;justify-content:space-between;margin-top:5px"><span style="font-size:10px;color:var(--text3)">'+pct+'% '+(ST.lang==='bn'?'সম্পন্ন':'complete')+'</span>'+(pct<100?'<button onclick="openBucketModal('+b.id+')" style="font-size:10px;color:var(--green);background:none;border:none;cursor:pointer">'+(ST.lang==='bn'?'+ যোগ করো':'+ Add money')+'</button>':'<span style="font-size:10px;color:var(--green);font-weight:700">'+(ST.lang==='bn'?'লক্ষ্য পূরণ! 🎉':'Goal reached! 🎉')+'</span>')+'</div>';bl.appendChild(div);});}}
+  const ll=document.getElementById('limList');
+  if(ll){ll.innerHTML='';const ct=catTots();Object.entries(ST.catLimits).forEach(([cat,lim])=>{const sp=ct[cat]||0;const p=Math.min(100,Math.round(sp/lim*100));const col=p>=100?'#E24B4A':p>=80?'#EF9F27':'#1D9E75';ll.innerHTML+='<div class="catrow"><span class="cname">'+cat+'</span><div class="ctrack"><div class="cfill" style="width:'+p+'%;background:'+col+'"></div></div><span class="camt">'+fmt(sp)+'/'+fmt(lim)+'</span><button onclick="delLim(\''+cat+'\')" style="background:none;border:none;cursor:pointer;font-size:11px;color:var(--text3);padding:0 3px">✕</button></div>';});if(!Object.keys(ST.catLimits).length)ll.innerHTML='<div style="font-size:11px;color:var(--text3);text-align:center;padding:9px">'+t('nodata')+'</div>';}
+}
+
+function rSettings(){
+  _s('lblSetBud',ST.lang==='bn'?'মাসিক বাজেট':'Monthly budget');
+  _s('lblFixSec',ST.lang==='bn'?'নির্দিষ্ট মাসিক খরচ':'Fixed monthly costs');
+  _s('lblImpSec',ST.lang==='bn'?'ডেটা import করো':'Import data');
+  _s('lblImpInfo',ST.lang==='bn'?'CSV format: Date (2026-01-01), Amount, Category, Note':'CSV format: Date (2026-01-01), Amount, Category, Note');
+  _s('lblImpBtn',ST.lang==='bn'?'📂 CSV file choose করো':'📂 Choose CSV file');
+  _s('lblDngr',ST.lang==='bn'?'বিপদ জোন':'Danger zone');
+  _s('btnSavBud',ST.lang==='bn'?'সেভ':'Save');
+  _s('btnAddFix',ST.lang==='bn'?'নির্দিষ্ট খরচ যোগ করো':'Add fixed cost');
+  _s('btnClr',ST.lang==='bn'?'সব ডেটা মুছে ফেলো':'Clear all data');
+  _p('fixNm',ST.lang==='bn'?'যেমন: বাসা ভাড়া':'e.g. House rent');
+  const M=ST.lang==='en'?MEN:MBN;
+  _s('lblBudMonth',M[ST.curM]+' '+ST.curY+(ST.lang==='bn'?' এর বাজেট':' budget'));
+  _s('lblBudNote',ST.lang==='bn'?'প্রতি মাসের budget আলাদাভাবে save হবে':'Each month saves its own budget separately');
+  const curBud=getBudget();const bi=document.getElementById('budI');if(bi&&curBud)bi.value=curBud;
+  const fl=document.getElementById('fixList');
+  if(fl){fl.innerHTML='';ST.fixedCosts.forEach(f=>{const row=document.createElement('div');row.style.cssText='display:flex;justify-content:space-between;align-items:center;padding:8px 11px;background:var(--bg);border-radius:var(--r);font-size:12px;margin-bottom:5px';row.innerHTML='<span style="color:var(--text)">'+f.name+'</span><div style="display:flex;gap:7px;align-items:center"><span style="font-weight:700;color:var(--text)">'+fmt(f.amount)+'</span><button onclick="delFixed('+f.id+')" style="background:none;border:none;cursor:pointer;color:var(--text3);font-size:11px">✕</button></div>';fl.appendChild(row);});}
+}
+
+function rPlanner(){
+  _s('lblMyInc',ST.lang==='bn'?'আমার আয়':'My income');
+  _s('lblIncAmt',ST.lang==='bn'?'মাসিক আয় (৳)':'Monthly income (৳)');
+  _s('lblFamSec',ST.lang==='bn'?'পরিবার':'Family');
+  _s('lblDep',ST.lang==='bn'?'নির্ভরশীল সদস্য':'Dependents');
+  _s('lblHou',ST.lang==='bn'?'বাসস্থান':'Housing');
+  _s('lblDbtSec',ST.lang==='bn'?'ঋণ':'Debt');
+  _s('lblDbtQ',ST.lang==='bn'?'মাসিক ঋণ বা কিস্তি?':'Monthly debt/installment?');
+  _s('lblDbtAmt',ST.lang==='bn'?'মাসিক কিস্তির পরিমাণ':'Monthly installment amount');
+  _s('lblGoalSec',ST.lang==='bn'?'লক্ষ্য':'Goal');
+  _s('lblGoalQ',ST.lang==='bn'?'সবচেয়ে জরুরি কী?':'Most important this month?');
+  _s('btnMakePlan',ST.lang==='bn'?'বাজেট প্ল্যান বানাও':'Generate budget plan');
+  const depC=document.getElementById('depC');if(depC){depC.innerHTML='';TX[ST.lang].depOpts.forEach((o,i)=>{const b=document.createElement('button');b.className='chip'+(ST.pSel.dep===i?' on':'');b.textContent=o;b.onclick=()=>{ST.pSel.dep=i;depC.querySelectorAll('.chip').forEach(x=>x.classList.remove('on'));b.classList.add('on');};depC.appendChild(b);});}
+  const houC=document.getElementById('houC');if(houC){houC.innerHTML='';const hv=['rent','own','family'];TX[ST.lang].houOpts.forEach((o,i)=>{const b=document.createElement('button');b.className='chip'+(ST.pSel.hou===hv[i]?' on':'');b.textContent=o;b.onclick=()=>{ST.pSel.hou=hv[i];houC.querySelectorAll('.chip').forEach(x=>x.classList.remove('on'));b.classList.add('on');};houC.appendChild(b);});}
+  const dbtC=document.getElementById('dbtC');if(dbtC){dbtC.innerHTML='';const dv=['none','small','large'];TX[ST.lang].dbtOpts.forEach((o,i)=>{const b=document.createElement('button');b.className='chip'+(ST.pSel.dbt===dv[i]?' on':'');b.textContent=o;b.onclick=()=>{ST.pSel.dbt=dv[i];const db=document.getElementById('dbtBox');if(db)db.style.display=dv[i]==='none'?'none':'block';dbtC.querySelectorAll('.chip').forEach(x=>x.classList.remove('on'));b.classList.add('on');};dbtC.appendChild(b);});}
+  const goalC=document.getElementById('goalC');if(goalC){goalC.innerHTML='';const gv=['save','debt','survive','invest'];TX[ST.lang].goalOpts.forEach((o,i)=>{const b=document.createElement('button');b.className='chip'+(ST.pSel.goal===gv[i]?' on':'');b.textContent=o;b.onclick=()=>{ST.pSel.goal=gv[i];goalC.querySelectorAll('.chip').forEach(x=>x.classList.remove('on'));b.classList.add('on');};goalC.appendChild(b);});}
+}
+
+function makePlan(){
+  const pi=document.getElementById('pInc');if(!pi)return;
+  const inc=parseFloat(pi.value);const pe=document.getElementById('pErr');
+  if(!inc||inc<=0){if(pe){pe.style.display='block';pe.textContent=ST.lang==='bn'?'আগে income লিখো!':'Enter your income!';}return;}
+  if(pe)pe.style.display='none';
+  planInc=inc;
+  const dai=document.getElementById('dbtAmtI');const dbt=ST.pSel.dbt!=='none'?(parseFloat(dai?dai.value:0)||0):0;
+  const cats=[];let rem=inc;
+  const add=(name,amount,note,type)=>{cats.push({name,amount:Math.round(Math.max(0,amount)),note,type});rem-=amount;};
+  if(dbt>0)add(ST.lang==='bn'?'ঋণ/কিস্তি':'Debt/Installment',dbt,ST.lang==='bn'?'মাসিক নির্দিষ্ট বাধ্যবাধকতা':'Fixed monthly obligation','fixed');
+  if(ST.pSel.hou==='rent')add(ST.lang==='bn'?'বাসা ভাড়া':'House rent',inc*0.28,ST.lang==='bn'?'Income-এর ৩০%-এর কম রাখো':'Keep under 30% of income','fixed');
+  else if(ST.pSel.hou==='family')add(ST.lang==='bn'?'পরিবারে অবদান':'Family contribution',inc*0.05,ST.lang==='bn'?'পরিবারের জন্য':'Support for family','fixed');
+  add(ST.lang==='bn'?'বিল (বিদ্যুৎ/ইন্টারনেট/মোবাইল)':'Bills (electricity/internet/mobile)',inc*0.05,ST.lang==='bn'?'মাসিক নির্দিষ্ট খরচ':'Fixed monthly bills','fixed');
+  const dm=1+(ST.pSel.dep*0.12);
+  add(ST.lang==='bn'?'খাবার ও বাজার':'Food & groceries',Math.min(rem*0.45,inc*(ST.pSel.hou==='family'?0.14:0.19)*dm),ST.lang==='bn'?'পরিবারের আকার অনুযায়ী':'Adjust for family size','variable');
+  add(ST.lang==='bn'?'যাতায়াত':'Transport',Math.min(rem*0.17,inc*0.09),ST.lang==='bn'?'রিকশা, বাস, Uber ইত্যাদি':'Rickshaw, bus, Uber etc.','variable');
+  add(ST.lang==='bn'?'হাত খরচ ও নাস্তা':'Daily expenses & snacks',Math.min(rem*0.11,inc*0.05),ST.lang==='bn'?'চা, নাস্তা, ছোটখাটো প্রয়োজন':'Tea, snacks, small needs','variable');
+  add(ST.lang==='bn'?'জরুরি তহবিল / ওষুধ':'Emergency fund / Medicine',Math.min(rem*0.09,inc*0.05),ST.lang==='bn'?'হঠাৎ প্রয়োজনে':'For emergencies','variable');
+  const leftover=Math.max(0,rem);
+  if(ST.pSel.goal==='save'||ST.pSel.goal==='invest'){const sa=Math.max(Math.min(leftover*0.75,leftover),500);if(sa>200)add(ST.pSel.goal==='invest'?(ST.lang==='bn'?'বিনিয়োগ':'Investment'):(ST.lang==='bn'?'সঞ্চয়':'Savings'),sa,ST.lang==='bn'?'আগে সঞ্চয়, পরে খরচ':'Save first, spend the rest','savings');}
+  else if(ST.pSel.goal==='debt'&&dbt>0){const ex=Math.min(leftover*0.6,leftover);if(ex>200)add(ST.lang==='bn'?'অতিরিক্ত ঋণ পরিশোধ':'Extra debt payment',ex,ST.lang==='bn'?'দ্রুত ঋণমুক্তির জন্য':'Pay off faster','variable');}
+  const fl2=inc-cats.reduce((s,c)=>s+c.amount,0);
+  if(fl2>300)add(ST.lang==='bn'?'বিবিধ / ব্যক্তিগত':'Miscellaneous',fl2,ST.lang==='bn'?'অবশিষ্ট — সাশ্রয়ী ব্যবহার করো':'Remaining — use wisely','variable');
+  let adv=ST.lang==='bn'?'আগে সঞ্চয় করো, বাকি দিয়ে চলো। প্রতিটা amount নিচে নিজে adjust করতে পারো।':'Save first, spend the rest. You can adjust any amount below.';
+  if(dbt>inc*0.4)adv=(ST.lang==='bn'?'সতর্কতা: ঋণের কিস্তি income-এর ৪০%-এর বেশি। ':'Warning: debt is over 40% of income. ')+adv;
+  planData={categories:cats,advice:adv};showPlan();
+}
+
+function showPlan(){
+  _s('lblEditPlan',ST.lang==='bn'?'প্ল্যান এডিট করো — যেকোনো amount বদলাও':'Edit your plan — adjust any amount');
+  _s('lblTotal2',ST.lang==='bn'?'মোট':'Total');
+  _s('btnApply',ST.lang==='bn'?'ট্র্যাকারে apply করো':'Apply to expense tracker');
+  _s('btnReset',ST.lang==='bn'?'নতুন প্ল্যান বানাও':'Make new plan');
+  const pa=document.getElementById('planAdvice');if(pa)pa.textContent=planData.advice;
+  const pi=document.getElementById('planItems');if(pi){pi.innerHTML='';planData.categories.forEach((c,i)=>{const div=document.createElement('div');div.className='plan-item';div.innerHTML='<div style="flex:1"><div style="font-size:12px;color:var(--text)">'+c.name+'</div><div style="font-size:10px;color:var(--text2);margin-top:1px">'+c.note+'</div></div><input class="pi-inp" type="number" value="'+c.amount+'" min="0" inputmode="numeric" onchange="updatePlanItem('+i+',this.value)"/>';pi.appendChild(div);});}
+  updatePlanTotals();
+  const pff=document.getElementById('pfForm');const pfr=document.getElementById('pfResult');
+  if(pff)pff.style.display='none';if(pfr)pfr.style.display='block';
+}
+
+function updatePlanItem(idx,val){if(planData)planData.categories[idx].amount=Math.round(parseFloat(val)||0);updatePlanTotals();}
+function updatePlanTotals(){
+  if(!planData)return;
+  const tot=planData.categories.reduce((s,c)=>s+c.amount,0);
+  const pct=planInc>0?Math.min(100,Math.round(tot/planInc*100)):0;
+  const rem=planInc-tot;
+  _s('planTotVal',fmt(tot));
+  const pb=document.getElementById('planBar');if(pb){pb.style.width=pct+'%';pb.className='bfill '+(pct>=100?'bdanger':pct>=90?'bwarn':'bok');}
+  const pr=document.getElementById('planRemain');
+  if(pr){if(rem>=0)pr.innerHTML='<span style="color:var(--green)">'+fmt(rem)+' '+t('remaining')+'</span>';else pr.innerHTML='<span style="color:var(--danger)">'+fmt(Math.abs(rem))+' '+t('over')+'</span>';}
+}
+function applyPlan(){
+  if(!planData)return;
+  setBudget(planInc);ST.fixedCosts=[];ST.catLimits={};
+  planData.categories.forEach(c=>{
+    if(c.type==='fixed')ST.fixedCosts.push({name:c.name,amount:c.amount,id:Date.now()+Math.random()});
+    else ST.catLimits[c.name]=c.amount;
+    if(!ST.categories.includes(c.name))ST.categories.push(c.name);
+  });
+  sv();swTab('daily');render();
+}
+function resetPlan(){const pff=document.getElementById('pfForm');const pfr=document.getElementById('pfResult');if(pff)pff.style.display='block';if(pfr)pfr.style.display='none';}
+
+function rSummary(){
+  _s('lblTots',ST.lang==='bn'?'মোট খরচ':'Total spent');
+  _s('lblVsl',ST.lang==='bn'?'গত মাসের তুলনা':'vs last month');
+  _s('lblThisM',ST.lang==='bn'?'এই মাস':'This month');
+  _s('lblLastM',ST.lang==='bn'?'গত মাস':'Last month');
+  _s('lblChartSec',ST.lang==='bn'?'গত ৭ দিনের খরচ':'Last 7 days spending');
+  _s('lblByCat',ST.lang==='bn'?'ক্যাটাগরি অনুযায়ী':'By category');
+  rChart();
+  _s('btnCSV',ST.lang==='bn'?'CSV ডাউনলোড':'Download CSV');
+  const tot=mTot();const bud=getBudget();const pct=bud>0?Math.min(100,Math.round(tot/bud*100)):0;
+  _s('sumSp',Math.round(tot).toLocaleString());
+  _s('sumBu',Math.round(bud).toLocaleString());
+  const sb=document.getElementById('sumBar');if(sb){sb.style.width=pct+'%';sb.className='bfill '+(pct>=100?'bdanger':pct>=80?'bwarn':'bok');}
+  let lm=ST.curM-1,ly=ST.curY;if(lm<0){lm=11;ly--;}
+  const lastTot=mTot(ly,lm);
+  _s('cmpThis',fmt(tot));_s('cmpLast',fmt(lastTot));
+  const diff=tot-lastTot;
+  const de=document.getElementById('cmpDiff');
+  if(de){if(Math.abs(diff)<100)de.innerHTML='<span style="color:var(--text2)">'+t('same')+'</span>';else if(diff>0)de.innerHTML='<span style="color:var(--danger)">+ '+fmt(diff)+' '+t('more')+'</span>';else de.innerHTML='<span style="color:var(--green)">- '+fmt(Math.abs(diff))+' '+t('less')+'</span>';}
+  // Monthly summary
+  const msc=document.getElementById('mSummaryCard');
+  if(msc&&tot>0){const ct2=catTots();const s2=Object.entries(ct2).sort((a,b)=>b[1]-a[1]);const topCat=s2[0];const daysW=Object.keys(ST.expenses).filter(k=>k.startsWith(ST.curY+'-'+String(ST.curM+1).padStart(2,'0'))&&(ST.expenses[k]||[]).length>0).length;const avgDay=daysW>0?Math.round(tot/daysW):0;const saved=Math.max(0,bud-tot);const ln=ST.lang==='bn';let h='<div class="scard" style="padding:14px 16px"><div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:10px">'+(ln?'এই মাসের সারসংক্ষেপ':'Month at a glance')+'</div>';h+='<div class="ms-row"><span class="ms-label">'+(ln?'মোট খরচ':'Total spent')+'</span><span class="ms-val">'+fmt(tot)+'</span></div>';if(bud>0)h+='<div class="ms-row"><span class="ms-label">'+(ln?'বাজেটের মধ্যে?':'Within budget?')+'</span><span class="ms-val" style="color:'+(saved>0?'#5DCAA5':'#F09595')+'">'+(saved>0?(ln?'হ্যাঁ, '+fmt(saved)+' বাঁচলো':'Yes! Saved '+fmt(saved)):(ln?'না':'No'))+'</span></div>';if(topCat)h+='<div class="ms-row"><span class="ms-label">'+(ln?'সবচেয়ে বেশি':'Most spent on')+'</span><span class="ms-val">'+topCat[0]+' ('+fmt(topCat[1])+')</span></div>';if(avgDay>0)h+='<div class="ms-row"><span class="ms-label">'+(ln?'গড় দৈনিক':'Avg daily')+'</span><span class="ms-val">'+fmt(avgDay)+'</span></div>';h+='<div class="ms-row"><span class="ms-label">'+(ln?'কতদিন খরচ':'Days with expenses')+'</span><span class="ms-val">'+daysW+(ln?' দিন':' days')+'</span></div></div>';msc.innerHTML=h;}else if(msc)msc.innerHTML='';
+  // Cat summary
+  const ct=catTots();const sorted=Object.entries(ct).sort((a,b)=>b[1]-a[1]);
+  const cs=document.getElementById('catSum');
+  if(cs){cs.innerHTML='';if(!sorted.length){cs.innerHTML='<div style="text-align:center;padding:18px;color:var(--text3);font-size:12px">'+t('nodata')+'</div>';}else{const max=sorted[0][1]||1;sorted.forEach(([cat,amt])=>{const p=Math.round(amt/max*100);const lim=ST.catLimits[cat];const col=lim&&amt>lim?'#E24B4A':'#1D9E75';const limTag=lim?'<span class="tag '+(amt>lim?'twarn':'tok')+'">'+(amt>lim?t('catover'):t('catok'))+'</span>':'';cs.innerHTML+='<div class="catrow"><span class="cname">'+cat+'</span><div class="ctrack"><div class="cfill" style="width:'+p+'%;background:'+col+'"></div></div><span class="camt">'+fmt(amt)+limTag+'</span></div>';});}}
+}
+
+function rChart(){
+  const wrap=document.getElementById('spendChartWrap');
+  const canvas=document.getElementById('spendChart');
+  if(!wrap||!canvas)return;
+  // Build last 7 days data
+  const labels=[];const data=[];const colors=[];
+  const today=new Date();
+  for(let i=6;i>=0;i--){
+    const d=new Date(today);d.setDate(today.getDate()-i);
+    const k=gk(d.getFullYear(),d.getMonth(),d.getDate());
+    const dayTotal=(ST.expenses[k]||[]).reduce((s,e)=>s+e.amount,0);
+    const M=ST.lang==='en'?MEN:MBN;const D=ST.lang==='en'?DEN:DBN;
+    labels.push(D[d.getDay()]);
+    data.push(dayTotal);
+    colors.push(dayTotal>0?'rgba(127,119,221,0.85)':'rgba(127,119,221,0.2)');
+  }
+  // Destroy old chart
+  if(window._spendChart)window._spendChart.destroy();
+  window._spendChart=new Chart(canvas,{
+    type:'bar',
+    data:{labels,datasets:[{data,backgroundColor:colors,borderRadius:8,borderSkipped:false}]},
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>'৳'+Math.round(ctx.raw).toLocaleString()}}},
+      scales:{
+        x:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'rgba(255,255,255,0.4)',font:{size:11,weight:'600'}}},
+        y:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'rgba(255,255,255,0.4)',font:{size:11},callback:v=>'৳'+Math.round(v/1000)+'k'},beginAtZero:true}
+      }
+    }
+  });
+}
+function expCSV(){
+  const rows=[['Date','Day','Amount','Category','Note']];
+  const pfx=ST.curY+'-'+String(ST.curM+1).padStart(2,'0');
+  Object.keys(ST.expenses).filter(k=>k.startsWith(pfx)).sort().forEach(k=>{const pts=k.split('-');const d=new Date(+pts[0],+pts[1]-1,+pts[2]);(ST.expenses[k]||[]).forEach(e=>rows.push([k,DEN[d.getDay()],e.amount,e.cat,e.note||'']));});
+  ST.fixedCosts.forEach(f=>rows.push(['Fixed','—',f.amount,'Fixed',f.name]));
+  rows.push(['TOTAL','','',mTot(),'']);
+  const csv=rows.map(r=>r.map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(',')).join('\n');
+  const blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'});
+  const url=URL.createObjectURL(blob);const a=document.createElement('a');
+  a.href=url;a.download='hishab_'+MEN[ST.curM]+'_'+ST.curY+'.csv';a.click();URL.revokeObjectURL(url);
+}
+
+function importCSV(input){
+  const file=input.files[0];if(!file)return;
+  const res=document.getElementById('impResult');if(res)res.innerHTML='<span style="color:var(--text2)">Reading...</span>';
+  const reader=new FileReader();
+  reader.onload=function(ev){
+    try{
+      const text=ev.target.result;const lines=text.split('\n').filter(l=>l.trim());
+      let imported=0,skipped=0;
+      const startIdx=lines[0].toLowerCase().includes('date')?1:0;
+      for(let i=startIdx;i<lines.length;i++){
+        const cols=lines[i].split(',').map(c=>c.replace(/^"|"$/g,'').trim());
+        if(cols.length<2)continue;
+        const dateStr=cols[0];const amt=parseFloat(cols[1]);
+        if(!dateStr||!amt||isNaN(amt)){skipped++;continue;}
+        const pts=dateStr.split('-');if(pts.length!==3){skipped++;continue;}
+        const y=parseInt(pts[0]),m=parseInt(pts[1])-1,d=parseInt(pts[2]);
+        if(isNaN(y)||isNaN(m)||isNaN(d)){skipped++;continue;}
+        const cat=cols[2]||'Other';const note=cols[3]||'';
+        const k=gk(y,m,d);if(!ST.expenses[k])ST.expenses[k]=[];
+        ST.expenses[k].push({amount:amt,note,cat,id:Date.now()+Math.random()});
+        imported++;
+      }
+      sv();render();
+      if(res)res.innerHTML='<span style="color:#5DCAA5;font-weight:700">✓ '+imported+' '+(ST.lang==='bn'?'টি entry import হয়েছে!':'rows imported!')+(skipped>0?' ('+skipped+' skipped)':'')+'</span>';
+      input.value='';
+    }catch(err){if(res)res.innerHTML='<span style="color:#F09595">'+(ST.lang==='bn'?'File পড়তে সমস্যা হয়েছে।':'Error reading file.')+'</span>';}
+  };
+  reader.readAsText(file,'UTF-8');
+}
+
+function clearAll(){
+  if(confirm(ST.lang==='en'?'Delete all data? Cannot be undone.':'সব ডেটা মুছে ফেলবো? ফিরিয়ে আনা যাবে না।')){
+    ST.expenses={};ST.fixedCosts=[];ST.budget=0;ST.budgets={};ST.savGoal=0;ST.catLimits={};ST.goalBuckets=[];
+    sv();render();rSettings();
+  }
+}
+
+function render(){
+  const M=ST.lang==='en'?MEN:MBN;const D=ST.lang==='en'?DEN:DBN;
+  _s('appName',ST.lang==='bn'?'হিসাব':'Hishab');
+  _s('mLbl',M[ST.curM]+' '+ST.curY);
+  _s('lBtn',t('lang'));
+  ['daily','summary','goals','planner','settings'].forEach((n,i)=>_s('t'+i,TX[ST.lang][n]));
+  _p('amtI',ST.lang==='bn'?'৳ পরিমাণ':'৳ Amount');
+  _p('noteI',ST.lang==='bn'?'নোট (ঐচ্ছিক)':'Note (optional)');
+  _p('newCat',ST.lang==='bn'?'+ নতুন ক্যাটাগরি...':'+ New category...');
+  _s('btnAddCat',ST.lang==='bn'?'যোগ':'Add');
+  _s('btnAdd',ST.lang==='bn'?'খরচ যোগ করো':'Add expense');
+  _s('lblDlist',ST.lang==='bn'?'এই মাস — দিন অনুযায়ী':'This month — day by day');
+  const tot=mTot();const bud=getBudget();const pct=bud>0?Math.min(100,Math.round(tot/bud*100)):0;
+  // Hero card
+  _s('hLabel',M[ST.curM]+' '+ST.curY+(ST.lang==='bn'?' · মাসিক বাজেট':' · Monthly budget'));
+  _s('hAmount',bud>0?fmt(bud):(ST.lang==='bn'?'বাজেট সেট করো →':'Set budget →'));
+  _s('hPct',pct+'%');
+  const hb=document.getElementById('hBar');if(hb){hb.style.width=Math.min(100,pct)+'%';hb.className='hero-bar '+(pct>=100?'hb-danger':pct>=80?'hb-warn':'hb-ok');}
+  _s('hSpentLbl',ST.lang==='bn'?'খরচ হয়েছে':'Total spent');
+  _s('hSpent',fmt(tot));
+  _s('hLeftLbl',ST.lang==='bn'?'বাকি আছে':'Remaining');
+  _s('hLeft',fmt(Math.max(0,bud-tot)));
+  const dL=isCur()?dim()-new Date().getDate():0;
+  _s('hLeftSub',dL>0?dL+' '+(ST.lang==='bn'?'দিন বাকি':'days left'):'');
+  rIns('insD');rCatBtns();setDefaultDate();
+  // Empty toggle button
+  const etb=document.getElementById('emptyBtn');if(etb)etb.textContent=showEmpty?(ST.lang==='bn'?'শুধু খরচের দিন':'Hide empty'):(ST.lang==='bn'?'সব দিন দেখাও':'Show all days');
+  // Day list
+  const dIM=dim();const dl=document.getElementById('dayList');if(!dl)return;dl.innerHTML='';
+  for(let d=dIM;d>=1;d--){
+    const k=gk(ST.curY,ST.curM,d);const entries=ST.expenses[k]||[];
+    const dt=entries.reduce((s,e)=>s+e.amount,0);
+    if(!showEmpty&&dt===0)continue;
+    const date=new Date(ST.curY,ST.curM,d);const isToday=date.toDateString()===new Date().toDateString();
+    const label=(isToday?(ST.lang==='bn'?'আজ — ':'Today — '):'')+d+' '+M[ST.curM].slice(0,3)+', '+D[date.getDay()];
+    const card=document.createElement('div');card.className='dc';
+    card.innerHTML='<div class="dh" onclick="togDay(this)"><span class="dlbl">'+label+'</span><span class="dtot'+(dt===0?' z':'')+'">'+( dt>0?fmt(dt):t('noexp'))+'</span></div>';
+    if(entries.length>0){const ed=document.createElement('div');ed.className='des';entries.forEach(e=>{const row=document.createElement('div');row.className='er';row.innerHTML='<div class="el"><span class="ecat">'+e.cat+'</span>'+(e.note?'<span class="enote">'+e.note+'</span>':'')+'</div><div style="display:flex;align-items:center;gap:4px"><span class="eamt">'+fmt(e.amount)+'</span><button class="edel" style="color:#64748b" onclick="openEdit(\''+k+'\','+e.id+')">✏️</button><button class="edel" onclick="delExp(\''+k+'\','+e.id+')">✕</button></div>';ed.appendChild(row);});card.appendChild(ed);}
+    dl.appendChild(card);
+  }
+}
+
+function togDay(h){const ed=h.parentElement.querySelector('.des');if(ed)ed.style.display=ed.style.display==='none'?'':'none';}
+
+if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js').catch(()=>{}));}
+
+render();rPlanner();checkOb();
+</script>
+</body>
+</html>
