@@ -283,6 +283,8 @@ input[type="date"].inp::-webkit-calendar-picker-indicator{filter:invert(0.5);cur
   </div>
   <div class="sec" id="lblByCat"></div>
   <div id="catSum" style="margin-bottom:13px"></div>
+  <div class="sec" id="lblNoteSum"></div>
+  <div id="noteSum" style="margin-bottom:13px"></div>
   <button class="ebtn" onclick="expCSV()" id="btnCSV"></button>
 </div>
 
@@ -729,6 +731,7 @@ function rSummary(){
   _s('lblByCat',ST.lang==='bn'?'ক্যাটাগরি অনুযায়ী':'By category');
   rChart();
   _s('btnCSV',ST.lang==='bn'?'CSV ডাউনলোড':'Download CSV');
+  _s('lblNoteSum',ST.lang==='bn'?'নোট অনুযায়ী খরচ':'Spending by note/purpose');
   const tot=mTot();const bud=getBudget();const pct=bud>0?Math.min(100,Math.round(tot/bud*100)):0;
   _s('sumSp',Math.round(tot).toLocaleString());
   _s('sumBu',Math.round(bud).toLocaleString());
@@ -740,6 +743,34 @@ function rSummary(){
   const de=document.getElementById('cmpDiff');
   if(de){if(Math.abs(diff)<100)de.innerHTML='<span style="color:var(--text2)">'+t('same')+'</span>';else if(diff>0)de.innerHTML='<span style="color:var(--danger)">+ '+fmt(diff)+' '+t('more')+'</span>';else de.innerHTML='<span style="color:var(--green)">- '+fmt(Math.abs(diff))+' '+t('less')+'</span>';}
   // Monthly summary
+  // Note-wise breakdown
+  const ns=document.getElementById('noteSum');
+  if(ns){
+    const pfx2=ST.curY+'-'+String(ST.curM+1).padStart(2,'0');
+    const noteTots={};
+    Object.keys(ST.expenses).forEach(k=>{
+      if(k.startsWith(pfx2)){
+        (ST.expenses[k]||[]).forEach(e=>{
+          if(e.note&&e.note.trim()){
+            const n=e.note.trim().toLowerCase();
+            noteTots[n]=(noteTots[n]||0)+e.amount;
+          }
+        });
+      }
+    });
+    const noteSorted=Object.entries(noteTots).sort((a,b)=>b[1]-a[1]).slice(0,15);
+    if(!noteSorted.length){
+      ns.innerHTML='<div style="text-align:center;padding:14px;color:var(--text3);font-size:12px">'+(ST.lang==='bn'?'কোনো নোট নেই':'No notes yet')+'</div>';
+    } else {
+      const nMax=noteSorted[0][1]||1;
+      ns.innerHTML='';
+      noteSorted.forEach(([note,amt])=>{
+        const p=Math.round(amt/nMax*100);
+        const pctOfTotal=mTot()>0?Math.round(amt/mTot()*100):0;
+        ns.innerHTML+='<div class="catrow" style="margin-bottom:8px"><span class="cname" style="width:90px;font-size:12px;color:var(--text2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex-shrink:0">'+note+'</span><div class="ctrack" style="flex:1;height:5px;background:var(--border);border-radius:3px;overflow:hidden"><div class="cfill" style="width:'+p+'%;height:100%;border-radius:3px;background:#7F77DD"></div></div><span style="font-size:12px;font-weight:700;color:var(--text);min-width:70px;text-align:right">'+fmt(amt)+'<span style="font-size:10px;color:var(--text3);margin-left:3px">'+pctOfTotal+'%</span></span></div>';
+      });
+    }
+  }
   const msc=document.getElementById('mSummaryCard');
   if(msc&&tot>0){const ct2=catTots();const s2=Object.entries(ct2).sort((a,b)=>b[1]-a[1]);const topCat=s2[0];const daysW=Object.keys(ST.expenses).filter(k=>k.startsWith(ST.curY+'-'+String(ST.curM+1).padStart(2,'0'))&&(ST.expenses[k]||[]).length>0).length;const avgDay=daysW>0?Math.round(tot/daysW):0;const saved=Math.max(0,bud-tot);const ln=ST.lang==='bn';let h='<div class="scard" style="padding:14px 16px"><div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:10px">'+(ln?'এই মাসের সারসংক্ষেপ':'Month at a glance')+'</div>';h+='<div class="ms-row"><span class="ms-label">'+(ln?'মোট খরচ':'Total spent')+'</span><span class="ms-val">'+fmt(tot)+'</span></div>';if(bud>0)h+='<div class="ms-row"><span class="ms-label">'+(ln?'বাজেটের মধ্যে?':'Within budget?')+'</span><span class="ms-val" style="color:'+(saved>0?'#5DCAA5':'#F09595')+'">'+(saved>0?(ln?'হ্যাঁ, '+fmt(saved)+' বাঁচলো':'Yes! Saved '+fmt(saved)):(ln?'না':'No'))+'</span></div>';if(topCat)h+='<div class="ms-row"><span class="ms-label">'+(ln?'সবচেয়ে বেশি':'Most spent on')+'</span><span class="ms-val">'+topCat[0]+' ('+fmt(topCat[1])+')</span></div>';if(avgDay>0)h+='<div class="ms-row"><span class="ms-label">'+(ln?'গড় দৈনিক':'Avg daily')+'</span><span class="ms-val">'+fmt(avgDay)+'</span></div>';h+='<div class="ms-row"><span class="ms-label">'+(ln?'কতদিন খরচ':'Days with expenses')+'</span><span class="ms-val">'+daysW+(ln?' দিন':' days')+'</span></div></div>';msc.innerHTML=h;}else if(msc)msc.innerHTML='';
   // Cat summary
