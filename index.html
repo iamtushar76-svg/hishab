@@ -20,8 +20,6 @@
 }
 body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;max-width:480px;margin:0 auto}
 .app{padding:12px 14px 80px}
-
-/* Topbar */
 .topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;padding-top:8px}
 .appname{font-size:20px;font-weight:700;color:var(--green)}
 .topright{display:flex;gap:6px;align-items:center}
@@ -32,17 +30,11 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
 .lbtn{padding:5px 10px;border:1px solid var(--border);border-radius:20px;font-size:11px;cursor:pointer;background:var(--bg2);color:var(--text2)}
 .spin{animation:sp 0.6s linear}
 @keyframes sp{to{transform:rotate(360deg)}}
-
-/* Tabs */
 .tabs{display:flex;margin-bottom:16px;border:1px solid var(--border);border-radius:var(--rl);overflow:hidden;background:var(--bg2)}
 .tab{flex:1;padding:10px 2px;text-align:center;font-size:12px;font-weight:600;cursor:pointer;color:var(--text2);border:none;background:none;border-right:1px solid var(--border);white-space:nowrap;transition:all 0.2s}
 .tab:last-child{border-right:none}
 .tab.active{background:var(--bg);color:var(--green);font-weight:700}
-
-/* Views */
 .view{display:none}.view.active{display:block}
-
-/* Hero Card */
 .hero{border-radius:20px;padding:20px;margin-bottom:16px;background:linear-gradient(135deg,#3d1f8a 0%,#251550 50%,#0f0a28 100%);border:1px solid rgba(175,169,236,0.2)}
 .hero-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px}
 .hero-label{font-size:11px;color:rgba(255,255,255,0.45);margin-bottom:6px}
@@ -61,8 +53,6 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
 .hs-lbl{font-size:10px;color:rgba(255,255,255,0.35);margin-bottom:3px}
 .hs-val{font-size:15px;font-weight:700}
 .hs-sub{font-size:10px;color:rgba(255,255,255,0.35);margin-top:2px}
-
-/* Insights */
 .insights{display:flex;flex-direction:column;gap:7px;margin-bottom:13px}
 .ic{border-radius:var(--r);padding:10px 13px;font-size:12px;line-height:1.5;border:1px solid}
 .ic-ok{background:#0a2e20;border-color:#1D9E75;color:#5DCAA5}
@@ -71,8 +61,6 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
 .ic-info{background:#08203a;border-color:#378ADD;color:#85B7EB}
 .ic-lbl{font-weight:700;margin-bottom:2px}
 .ic-sub{opacity:0.85;font-size:11px}
-
-/* Add Card */
 .acard{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:16px;margin-bottom:13px}
 .inp{width:100%;padding:10px 13px;border:1px solid var(--border);border-radius:var(--r);font-size:14px;background:var(--bg);color:var(--text);outline:none;font-family:inherit}
 input[type="date"].inp{-webkit-appearance:none;appearance:none;min-height:44px;padding-right:10px}
@@ -88,11 +76,7 @@ input[type="date"].inp::-webkit-calendar-picker-indicator{filter:invert(0.5);cur
 .gbtn:active{opacity:0.85}
 .suggest-list{display:flex;flex-wrap:wrap;gap:5px}
 .sc{padding:4px 9px;border:1px solid var(--border);border-radius:20px;font-size:11px;cursor:pointer;background:var(--bg);color:var(--text2)}
-
-/* Section title */
 .sec{font-size:10px;font-weight:700;color:var(--text2);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.08em}
-
-/* Day list */
 .dl{display:flex;flex-direction:column;gap:7px;margin-bottom:14px}
 .dc{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);overflow:hidden}
 .dh{display:flex;justify-content:space-between;align-items:center;padding:10px 13px;cursor:pointer;user-select:none}
@@ -107,11 +91,7 @@ input[type="date"].inp::-webkit-calendar-picker-indicator{filter:invert(0.5);cur
 .enote{color:var(--text2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .eamt{font-weight:700;color:var(--text);flex-shrink:0;margin-right:4px}
 .edel{background:none;border:none;cursor:pointer;color:var(--text3);font-size:11px;padding:3px 5px}
-
-/* Cards */
 .scard{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:14px 16px;margin-bottom:13px}
-
-/* Summary */
 .crow{display:flex;gap:8px;margin-bottom:11px}
 .cbox{flex:1;background:var(--bg);border-radius:var(--r);padding:10px 11px;text-align:center}
 .cv{font-size:15px;font-weight:700;color:var(--text)}
@@ -125,12 +105,8 @@ input[type="date"].inp::-webkit-calendar-picker-indicator{filter:invert(0.5);cur
 .tag{font-size:10px;padding:2px 6px;border-radius:8px;margin-left:3px}
 .tok{background:#0a2e20;color:#5DCAA5}.twarn{background:#2e0a0a;color:#F09595}
 .ebtn{width:100%;padding:9px;background:var(--bg);border:1px solid var(--border);border-radius:var(--r);font-size:12px;cursor:pointer;color:var(--text);margin-bottom:8px;font-family:inherit}
-
-/* Chips */
 .chip{padding:6px 11px;border:1px solid var(--border);border-radius:20px;font-size:12px;cursor:pointer;background:var(--bg);color:var(--text2);margin:0 5px 5px 0;font-family:inherit}
 .chip.on{background:var(--green);border-color:var(--green);color:#fff}
-
-/* Plan */
 .plan-item{display:flex;align-items:center;gap:8px;padding:10px 0;border-bottom:1px solid var(--border)}
 .plan-item:last-child{border-bottom:none}
 .pi-inp{width:95px;padding:6px 9px;border:1px solid var(--border);border-radius:var(--r);font-size:13px;background:var(--bg);color:var(--text);text-align:right;outline:none;font-family:inherit}
@@ -139,15 +115,11 @@ input[type="date"].inp::-webkit-calendar-picker-indicator{filter:invert(0.5);cur
 .advice-box{background:#08203a;border:1px solid #378ADD;border-radius:var(--r);padding:11px 13px;font-size:12px;color:#85B7EB;line-height:1.6;margin-bottom:12px}
 .abtn{width:100%;padding:11px;background:var(--bg);border:1px solid var(--green);border-radius:var(--r);font-size:13px;font-weight:700;cursor:pointer;color:var(--green);margin-bottom:8px;font-family:inherit}
 .rbtn2{width:100%;padding:9px;background:none;border:1px solid var(--border);border-radius:var(--r);font-size:12px;cursor:pointer;color:var(--text2);font-family:inherit}
-
-/* Modal */
 .modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:1000;align-items:flex-end;justify-content:center}
 .modal-overlay.open{display:flex}
 .modal{background:var(--bg2);border-radius:20px 20px 0 0;padding:20px 16px 40px;width:100%;max-width:480px;border-top:1px solid var(--border)}
 .modal-title{font-size:15px;font-weight:700;color:var(--text);margin-bottom:14px;text-align:center}
 .del-btn{width:100%;padding:10px;background:none;border:1px solid var(--danger);border-radius:var(--r);font-size:13px;cursor:pointer;color:#F09595;margin-top:7px;font-family:inherit}
-
-/* Onboarding */
 .ob-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:var(--bg);z-index:2000;overflow-y:auto}
 .ob-overlay.show{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 24px}
 .ob-title{font-size:26px;font-weight:700;color:var(--text);margin-bottom:8px;text-align:center}
@@ -159,18 +131,11 @@ input[type="date"].inp::-webkit-calendar-picker-indicator{filter:invert(0.5);cur
 .ob-step-desc{font-size:12px;color:var(--text2)}
 .ob-btn{width:100%;max-width:340px;padding:14px;background:var(--green);color:#fff;border:none;border-radius:var(--rl);font-size:15px;font-weight:700;cursor:pointer;font-family:inherit}
 .ob-skip{margin-top:12px;font-size:12px;color:var(--text3);cursor:pointer;text-decoration:underline}
-
-/* Month summary */
 .ms-row{display:flex;justify-content:space-between;font-size:12px;margin-bottom:6px}
 .ms-label{color:var(--text2)}.ms-val{font-weight:700;color:var(--text)}
-
-/* Goal buckets */
 .bucket-item{margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid var(--border)}
 .bucket-item:last-child{border-bottom:none}
-
-/* Install banner */
 .install-banner{display:none;background:var(--green);color:#fff;padding:10px 14px;border-radius:var(--r);margin-bottom:12px;font-size:12px;cursor:pointer;text-align:center;font-weight:600}
-
 .lbl{font-size:12px;color:var(--text2);margin-bottom:6px}
 .row{display:flex;gap:7px;margin-bottom:8px}
 .err{font-size:11px;color:#F09595;margin-bottom:8px;display:none;padding:8px 12px;background:#2e0a0a;border-radius:var(--r);border:1px solid var(--danger)}
@@ -178,12 +143,184 @@ input[type="date"].inp::-webkit-calendar-picker-indicator{filter:invert(0.5);cur
 .bfill{height:100%;border-radius:3px;transition:width 0.4s}
 .bok{background:var(--green);box-shadow:0 0 8px rgba(29,158,117,0.5)}
 .bwarn{background:var(--warn)}.bdanger{background:var(--danger)}
+
+/* Auth / Sync UI */
+.auth-bar{display:flex;align-items:center;gap:8px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:10px 13px;margin-bottom:13px;font-size:12px}
+.auth-avatar{width:28px;height:28px;border-radius:50%;object-fit:cover;flex-shrink:0}
+.auth-name{flex:1;color:var(--text2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.auth-btn{padding:5px 12px;border-radius:20px;font-size:11px;cursor:pointer;font-family:inherit;border:none;font-weight:600}
+.auth-signin{background:var(--green);color:#fff}
+.auth-signout{background:var(--bg);border:1px solid var(--border)!important;color:var(--text2)}
+.sync-status{font-size:10px;color:var(--text3);margin-left:4px}
+.sync-ok{color:#5DCAA5}.sync-err{color:#F09595}.sync-ing{color:#EF9F27}
+
+/* Loading overlay */
+.loading-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(10,22,40,0.92);z-index:3000;align-items:center;justify-content:center;flex-direction:column;gap:12px}
+.loading-overlay.show{display:flex}
+.loading-spinner{width:36px;height:36px;border:3px solid var(--border);border-top-color:var(--green);border-radius:50%;animation:sp 0.7s linear infinite}
+.loading-text{font-size:13px;color:var(--text2)}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<!-- Firebase -->
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+import { getFirestore, doc, setDoc, getDoc } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+
+// ===== FIREBASE CONFIG =====
+// তোমার Firebase project এর config এখানে বসাতে হবে
+const firebaseConfig = {
+  apiKey: "AIzaSyBOcXBajUhJIFvq1NOr6r2C3PgTLm2QxKE",
+  authDomain: "hishab-f1924.firebaseapp.com",
+  projectId: "hishab-f1924",
+  storageBucket: "hishab-f1924.firebasestorage.app",
+  messagingSenderId: "950372032027",
+  appId: "1:950372032027:web:079f16c8119e31da16e2be"
+};
+// ===========================
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+const provider = new GoogleAuthProvider();
+
+let currentUser = null;
+let syncTimeout = null;
+
+// Auth state listener
+onAuthStateChanged(auth, async (user) => {
+  currentUser = user;
+  updateAuthUI(user);
+  if (user) {
+    showLoading('ডেটা লোড হচ্ছে...');
+    await loadFromCloud(user.uid);
+    hideLoading();
+  }
+});
+
+function updateAuthUI(user) {
+  const bar = document.getElementById('authBar');
+  if (!bar) return;
+  if (user) {
+    bar.innerHTML = `
+      <img class="auth-avatar" src="${user.photoURL || ''}" onerror="this.style.display='none'"/>
+      <span class="auth-name">${user.displayName || user.email}</span>
+      <span class="sync-status sync-ok" id="syncStatus">✓ Synced</span>
+      <button class="auth-btn auth-signout" onclick="window._fbSignOut()">Sign out</button>`;
+  } else {
+    bar.innerHTML = `
+      <span class="auth-name" style="color:var(--text3)">লগিন করলে data সব device এ থাকবে ☁️</span>
+      <button class="auth-btn auth-signin" onclick="window._fbSignIn()">Google দিয়ে Login</button>`;
+  }
+}
+
+async function loadFromCloud(uid) {
+  try {
+    const ref = doc(db, 'users', uid, 'data', 'hishab');
+    const snap = await getDoc(ref);
+    if (snap.exists()) {
+      const cloudData = snap.data();
+      // Merge: cloud data wins, but keep local categories if cloud has none
+      window._applyCloudData(cloudData);
+    } else {
+      // First time login — migrate localStorage data to cloud
+      await migrateLocalToCloud(uid);
+    }
+  } catch (e) {
+    console.error('Load error:', e);
+    setSyncStatus('err', '⚠ Sync error');
+  }
+}
+
+async function migrateLocalToCloud(uid) {
+  try {
+    const local = localStorage.getItem('hishab_app');
+    if (local) {
+      const parsed = JSON.parse(local);
+      await saveToCloud(uid, parsed);
+      setSyncStatus('ok', '✓ Data migrated!');
+    }
+  } catch (e) {
+    console.error('Migration error:', e);
+  }
+}
+
+async function saveToCloud(uid, data) {
+  try {
+    const ref = doc(db, 'users', uid, 'data', 'hishab');
+    await setDoc(ref, data);
+    setSyncStatus('ok', '✓ Synced');
+  } catch (e) {
+    console.error('Save error:', e);
+    setSyncStatus('err', '⚠ Sync failed');
+  }
+}
+
+function setSyncStatus(type, msg) {
+  const el = document.getElementById('syncStatus');
+  if (el) {
+    el.className = 'sync-status sync-' + type;
+    el.textContent = msg;
+  }
+}
+
+// Debounced cloud save — 2 seconds after last change
+window._scheduleSave = function(data) {
+  if (!currentUser) return;
+  clearTimeout(syncTimeout);
+  setSyncStatus('ing', '⟳ Saving...');
+  syncTimeout = setTimeout(async () => {
+    await saveToCloud(currentUser.uid, data);
+  }, 2000);
+};
+
+window._fbSignIn = async function() {
+  try {
+    await signInWithPopup(auth, provider);
+  } catch (e) {
+    alert('Login এ সমস্যা হয়েছে। আবার চেষ্টা করো।');
+  }
+};
+
+window._fbSignOut = async function() {
+  if (confirm('Sign out করবে?')) {
+    await signOut(auth);
+    updateAuthUI(null);
+  }
+};
+
+function showLoading(msg) {
+  const ol = document.getElementById('loadingOverlay');
+  const lt = document.getElementById('loadingText');
+  if (ol) ol.classList.add('show');
+  if (lt) lt.textContent = msg || 'লোড হচ্ছে...';
+}
+
+function hideLoading() {
+  const ol = document.getElementById('loadingOverlay');
+  if (ol) ol.classList.remove('show');
+}
+
+window._showLoading = showLoading;
+window._hideLoading = hideLoading;
+</script>
 </head>
 <body>
+
+<!-- Loading overlay -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="loading-spinner"></div>
+  <div class="loading-text" id="loadingText">লোড হচ্ছে...</div>
+</div>
+
 <div class="app">
 <div id="installBanner" class="install-banner" onclick="installApp()">📲 Home screen-এ install করো</div>
+
+<!-- Auth bar -->
+<div class="auth-bar" id="authBar">
+  <span class="auth-name" style="color:var(--text3)">লগিন করলে data সব device এ থাকবে ☁️</span>
+  <button class="auth-btn auth-signin" onclick="window._fbSignIn && window._fbSignIn()">Google দিয়ে Login</button>
+</div>
 
 <div class="topbar">
   <div style="display:flex;align-items:center;gap:8px">
@@ -459,26 +596,96 @@ en:{app:'Hishab',daily:'Daily',summary:'Summary',goals:'Goals',planner:'Planner'
 bn:{app:'হিসাব',daily:'দৈনিক',summary:'সারসংক্ষেপ',goals:'লক্ষ্য',planner:'প্ল্যানার',settings:'সেটিংস',noexp:'কোনো খরচ নেই',lang:'English',more:'গত মাসের চেয়ে বেশি',less:'গত মাসের চেয়ে কম',same:'গত মাসের মতোই',safelim:'আজ সর্বোচ্চ',budused:'বাজেট শেষ',dleft:'দিন বাকি',topcat:'সবচেয়ে বেশি',savedsofar:'এখন পর্যন্ত বাঁচলো',over:'বাজেট ছাড়িয়েছে',under:'বাজেটের মধ্যে',ontrack:'সঠিক পথে',catover:'সীমা ছাড়িয়েছে',catok:'ঠিক আছে',nodata:'কোনো ডেটা নেই',remaining:'বাকি',depOpts:['শুধু আমি','১ জন','২-৩ জন','৪+ জন'],houOpts:['ভাড়া বাসায়','নিজের বাসা','পরিবারের সাথে'],dbtOpts:['নেই','আছে (ছোট)','আছে (বড়)'],goalOpts:['সঞ্চয় করা','ঋণ শোধ','খরচ মেটানো','বিনিয়োগ']}
 };
 const DEFCATS=['Food','Transport','Bills','Family','Bike','Personal','Other'];
-let ST={budget:0,budgets:{},fixedCosts:[],categories:[...DEFCATS],expenses:{},curM:new Date().getMonth(),curY:new Date().getFullYear(),selCat:'Other',lang:'bn',savGoal:0,catLimits:{},goalBuckets:[],pSel:{dep:0,hou:'rent',dbt:'none',goal:'save'}};
-try{const s=localStorage.getItem('hishab_app');if(s)ST={...ST,...JSON.parse(s)};}catch(e){}
+
+// ===== STATE =====
+let ST={
+  budget:0,
+  budgets:{},   // KEY: "2026-04" → budget amount (month-specific)
+  fixedCosts:[],
+  categories:[...DEFCATS],
+  expenses:{},
+  curM:new Date().getMonth(),
+  curY:new Date().getFullYear(),
+  selCat:'Other',
+  lang:'bn',
+  savGoal:0,
+  catLimits:{},
+  goalBuckets:[],
+  pSel:{dep:0,hou:'rent',dbt:'none',goal:'save'}
+};
+
+// Load from localStorage on start
+try{
+  const s=localStorage.getItem('hishab_app');
+  if(s){
+    const parsed=JSON.parse(s);
+    ST={...ST,...parsed};
+    // ===== BUDGET BUG FIX =====
+    // যদি পুরনো version এ single `budget` ছিল কিন্তু `budgets` object ছিল না বা empty ছিল
+    // তাহলে current month এ migrate করো, অন্য month এ apply করো না
+    if(parsed.budget && parsed.budget > 0 && (!parsed.budgets || Object.keys(parsed.budgets).length === 0)){
+      // পুরনো single budget শুধু current month এ set করো
+      const now = new Date();
+      const curKey = now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
+      ST.budgets = {};
+      ST.budgets[curKey] = parsed.budget;
+    }
+  }
+}catch(e){}
+
 let planData=null,planInc=0,showEmpty=false,editKey=null,editId=null,deferredPrompt=null;
 
-function sv(){try{localStorage.setItem('hishab_app',JSON.stringify(ST));}catch(e){}}
+// Apply cloud data (called from Firebase module)
+window._applyCloudData = function(cloudData) {
+  if (!cloudData) return;
+  ST = {...ST, ...cloudData};
+  // Apply same budget bug fix for cloud data too
+  if(cloudData.budget && cloudData.budget > 0 && (!cloudData.budgets || Object.keys(cloudData.budgets).length === 0)){
+    const now = new Date();
+    const curKey = now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
+    ST.budgets = {};
+    ST.budgets[curKey] = cloudData.budget;
+  }
+  sv();
+  render();rGoals();rSettings();rPlanner();
+};
+
+// Save — localStorage + trigger cloud save
+function sv(){
+  try{localStorage.setItem('hishab_app',JSON.stringify(ST));}catch(e){}
+  // Cloud save (debounced)
+  if(window._scheduleSave) window._scheduleSave(ST);
+}
+
 function t(k){return TX[ST.lang][k]||k;}
 function fmt(n){return '৳'+Math.round(n).toLocaleString();}
 function gk(y,m,d){return y+'-'+String(m+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');}
 function dim(y,m){return new Date((y??ST.curY),(m??ST.curM)+1,0).getDate();}
 function isCur(){const n=new Date();return n.getMonth()===ST.curM&&n.getFullYear()===ST.curY;}
+
+// Month key: "2026-04" format
 function mKey(y,m){return (y??ST.curY)+'-'+String((m??ST.curM)+1).padStart(2,'0');}
-function getBudget(y,m){const k=mKey(y,m);return ST.budgets[k]??ST.budget??0;}
-function setBudget(v,y,m){const k=mKey(y,m);ST.budgets[k]=v;ST.budget=v;}
+
+// ===== BUDGET BUG FIX: month-specific get/set =====
+function getBudget(y,m){
+  const k=mKey(y,m);
+  // Only return budget if explicitly set for this month
+  return ST.budgets[k] || 0;
+}
+function setBudget(v,y,m){
+  const k=mKey(y,m);
+  ST.budgets[k]=v;
+  // Also update legacy field for backward compat
+  ST.budget=v;
+}
+// ================================================
+
 function varExp(y,m){y=y??ST.curY;m=m??ST.curM;const p=y+'-'+String(m+1).padStart(2,'0');let tot=0;Object.keys(ST.expenses).forEach(k=>{if(k.startsWith(p))(ST.expenses[k]||[]).forEach(e=>tot+=e.amount);});return tot;}
 function fixTot(){return ST.fixedCosts.reduce((s,f)=>s+f.amount,0);}
 function mTot(y,m){return varExp(y,m)+fixTot();}
 function todTot(){if(!isCur())return 0;const n=new Date();return(ST.expenses[gk(ST.curY,ST.curM,n.getDate())]||[]).reduce((s,e)=>s+e.amount,0);}
 function catTots(y,m){y=y??ST.curY;m=m??ST.curM;const p=y+'-'+String(m+1).padStart(2,'0'),ct={};Object.keys(ST.expenses).forEach(k=>{if(k.startsWith(p))(ST.expenses[k]||[]).forEach(e=>{ct[e.cat]=(ct[e.cat]||0)+e.amount;});});const fk=ST.lang==='en'?'Fixed':'ফিক্সড';ST.fixedCosts.forEach(f=>{ct[fk]=(ct[fk]||0)+f.amount;});return ct;}
 
-// Safe DOM setter
 function _s(id,v){const e=document.getElementById(id);if(e)e.textContent=v;}
 function _h(id,v){const e=document.getElementById(id);if(e)e.innerHTML=v;}
 function _p(id,v){const e=document.getElementById(id);if(e)e.placeholder=v;}
@@ -486,7 +693,13 @@ function _p(id,v){const e=document.getElementById(id);if(e)e.placeholder=v;}
 window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;const b=document.getElementById('installBanner');if(b)b.style.display='block';});
 function installApp(){if(deferredPrompt){deferredPrompt.prompt();deferredPrompt.userChoice.then(()=>{deferredPrompt=null;const b=document.getElementById('installBanner');if(b)b.style.display='none';});}}
 
-function doRefresh(){const btn=document.getElementById('rfBtn');if(btn)btn.classList.add('spin');try{const s=localStorage.getItem('hishab_app');if(s)ST={...ST,...JSON.parse(s)};}catch(e){}render();setTimeout(()=>{if(btn)btn.classList.remove('spin');},600);}
+function doRefresh(){
+  const btn=document.getElementById('rfBtn');
+  if(btn)btn.classList.add('spin');
+  try{const s=localStorage.getItem('hishab_app');if(s)ST={...ST,...JSON.parse(s)};}catch(e){}
+  render();
+  setTimeout(()=>{if(btn)btn.classList.remove('spin');},600);
+}
 
 function togLang(){ST.lang=ST.lang==='en'?'bn':'en';sv();render();rGoals();rSettings();rPlanner();}
 
@@ -549,7 +762,6 @@ function showSugg(q){const sl=document.getElementById('suggestList');if(!sl)retu
 
 function togEmpty(){showEmpty=!showEmpty;render();}
 
-// Edit modal
 function openEdit(key,id){
   editKey=key;editId=id;
   const entries=ST.expenses[key]||[];const e=entries.find(x=>x.id===id);if(!e)return;
@@ -579,22 +791,25 @@ function saveEdit(){
 function delFromEdit(){if(!editKey||!editId)return;ST.expenses[editKey]=(ST.expenses[editKey]||[]).filter(e=>e.id!==editId);sv();closeEdit();render();}
 const em=document.getElementById('editModal');if(em)em.addEventListener('click',function(e){if(e.target===this)closeEdit();});
 
-// Bucket modal
 function openBucketModal(id){const bm=document.getElementById('bucketModal');if(!bm)return;const bi=document.getElementById('bucketModalId');if(bi)bi.value=id;const ba=document.getElementById('bucketModalAmt');if(ba){ba.value='';setTimeout(()=>ba.focus(),100);}const bn=ST.lang==='bn';_s('bucketModalTitle',bn?'কত টাকা যোগ করবো?':'Add savings amount');_s('bucketModalOk',bn?'যোগ করো':'Add');_s('bucketModalCancel',bn?'বাতিল':'Cancel');bm.classList.add('open');}
 function closeBucketModal(){const bm=document.getElementById('bucketModal');if(bm)bm.classList.remove('open');}
 function confirmBucketAdd(){const bi=document.getElementById('bucketModalId');const ba=document.getElementById('bucketModalAmt');if(!bi||!ba)return;const id=parseInt(bi.value);const amt=parseFloat(ba.value);if(amt>0){const b=ST.goalBuckets.find(x=>x.id===id);if(b){b.saved=Math.min(b.target,(b.saved||0)+amt);sv();rGoals();}}closeBucketModal();}
 const bm2=document.getElementById('bucketModal');if(bm2)bm2.addEventListener('click',function(e){if(e.target===this)closeBucketModal();});
 
-// Onboarding
 function checkOb(){if(!localStorage.getItem('hishab_onboarded')){const o=document.getElementById('obOverlay');if(o)o.classList.add('show');}}
 function finishOb(){localStorage.setItem('hishab_onboarded','1');const o=document.getElementById('obOverlay');if(o)o.classList.remove('show');}
 
-// Budget
-function saveBud(){const bi=document.getElementById('budI');if(!bi)return;const v=parseFloat(bi.value);if(v>0){setBudget(v);sv();render();rSettings();}}
+function saveBud(){
+  const bi=document.getElementById('budI');if(!bi)return;
+  const v=parseFloat(bi.value);
+  if(v>0){
+    setBudget(v); // sets for current month only
+    sv();render();rSettings();
+  }
+}
 function addFixed(){const nm=document.getElementById('fixNm');const am=document.getElementById('fixAm');if(!nm||!am)return;const name=nm.value.trim();const amt=parseFloat(am.value);if(name&&amt>0){ST.fixedCosts.push({name,amount:amt,id:Date.now()});nm.value='';am.value='';sv();rSettings();render();}}
 function delFixed(id){ST.fixedCosts=ST.fixedCosts.filter(f=>f.id!==id);sv();rSettings();render();}
 
-// Goals
 function saveSG(){const gi=document.getElementById('savGI');if(!gi)return;const v=parseFloat(gi.value);if(v>0){ST.savGoal=v;sv();rGoals();}}
 function saveLim(){const ls=document.getElementById('limSel');const la=document.getElementById('limAmt');if(!ls||!la)return;const cat=ls.value;const amt=parseFloat(la.value);if(cat&&amt>0){ST.catLimits[cat]=amt;la.value='';sv();rGoals();}}
 function delLim(cat){delete ST.catLimits[cat];sv();rGoals();}
@@ -636,7 +851,7 @@ function rSettings(){
   const M=ST.lang==='en'?MEN:MBN;
   _s('lblBudMonth',M[ST.curM]+' '+ST.curY+(ST.lang==='bn'?' এর বাজেট':' budget'));
   _s('lblBudNote',ST.lang==='bn'?'প্রতি মাসের budget আলাদাভাবে save হবে':'Each month saves its own budget separately');
-  const curBud=getBudget();const bi=document.getElementById('budI');if(bi&&curBud)bi.value=curBud;
+  const curBud=getBudget();const bi=document.getElementById('budI');if(bi)bi.value=curBud||'';
   const fl=document.getElementById('fixList');
   if(fl){fl.innerHTML='';ST.fixedCosts.forEach(f=>{const row=document.createElement('div');row.style.cssText='display:flex;justify-content:space-between;align-items:center;padding:8px 11px;background:var(--bg);border-radius:var(--r);font-size:12px;margin-bottom:5px';row.innerHTML='<span style="color:var(--text)">'+f.name+'</span><div style="display:flex;gap:7px;align-items:center"><span style="font-weight:700;color:var(--text)">'+fmt(f.amount)+'</span><button onclick="delFixed('+f.id+')" style="background:none;border:none;cursor:pointer;color:var(--text3);font-size:11px">✕</button></div>';fl.appendChild(row);});}
 }
@@ -742,38 +957,19 @@ function rSummary(){
   const diff=tot-lastTot;
   const de=document.getElementById('cmpDiff');
   if(de){if(Math.abs(diff)<100)de.innerHTML='<span style="color:var(--text2)">'+t('same')+'</span>';else if(diff>0)de.innerHTML='<span style="color:var(--danger)">+ '+fmt(diff)+' '+t('more')+'</span>';else de.innerHTML='<span style="color:var(--green)">- '+fmt(Math.abs(diff))+' '+t('less')+'</span>';}
-  // Monthly summary
-  // Note-wise breakdown
   const ns=document.getElementById('noteSum');
   if(ns){
     const pfx2=ST.curY+'-'+String(ST.curM+1).padStart(2,'0');
     const noteTots={};
     Object.keys(ST.expenses).forEach(k=>{
-      if(k.startsWith(pfx2)){
-        (ST.expenses[k]||[]).forEach(e=>{
-          if(e.note&&e.note.trim()){
-            const n=e.note.trim().toLowerCase();
-            noteTots[n]=(noteTots[n]||0)+e.amount;
-          }
-        });
-      }
+      if(k.startsWith(pfx2)){(ST.expenses[k]||[]).forEach(e=>{if(e.note&&e.note.trim()){const n=e.note.trim().toLowerCase();noteTots[n]=(noteTots[n]||0)+e.amount;}});}
     });
     const noteSorted=Object.entries(noteTots).sort((a,b)=>b[1]-a[1]).slice(0,15);
-    if(!noteSorted.length){
-      ns.innerHTML='<div style="text-align:center;padding:14px;color:var(--text3);font-size:12px">'+(ST.lang==='bn'?'কোনো নোট নেই':'No notes yet')+'</div>';
-    } else {
-      const nMax=noteSorted[0][1]||1;
-      ns.innerHTML='';
-      noteSorted.forEach(([note,amt])=>{
-        const p=Math.round(amt/nMax*100);
-        const pctOfTotal=mTot()>0?Math.round(amt/mTot()*100):0;
-        ns.innerHTML+='<div class="catrow" style="margin-bottom:8px"><span class="cname" style="width:90px;font-size:12px;color:var(--text2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex-shrink:0">'+note+'</span><div class="ctrack" style="flex:1;height:5px;background:var(--border);border-radius:3px;overflow:hidden"><div class="cfill" style="width:'+p+'%;height:100%;border-radius:3px;background:#7F77DD"></div></div><span style="font-size:12px;font-weight:700;color:var(--text);min-width:70px;text-align:right">'+fmt(amt)+'<span style="font-size:10px;color:var(--text3);margin-left:3px">'+pctOfTotal+'%</span></span></div>';
-      });
-    }
+    if(!noteSorted.length){ns.innerHTML='<div style="text-align:center;padding:14px;color:var(--text3);font-size:12px">'+(ST.lang==='bn'?'কোনো নোট নেই':'No notes yet')+'</div>';}
+    else{const nMax=noteSorted[0][1]||1;ns.innerHTML='';noteSorted.forEach(([note,amt])=>{const p=Math.round(amt/nMax*100);const pctOfTotal=mTot()>0?Math.round(amt/mTot()*100):0;ns.innerHTML+='<div class="catrow" style="margin-bottom:8px"><span class="cname" style="width:90px;font-size:12px;color:var(--text2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex-shrink:0">'+note+'</span><div class="ctrack" style="flex:1;height:5px;background:var(--border);border-radius:3px;overflow:hidden"><div class="cfill" style="width:'+p+'%;height:100%;border-radius:3px;background:#7F77DD"></div></div><span style="font-size:12px;font-weight:700;color:var(--text);min-width:70px;text-align:right">'+fmt(amt)+'<span style="font-size:10px;color:var(--text3);margin-left:3px">'+pctOfTotal+'%</span></span></div>';});}
   }
   const msc=document.getElementById('mSummaryCard');
   if(msc&&tot>0){const ct2=catTots();const s2=Object.entries(ct2).sort((a,b)=>b[1]-a[1]);const topCat=s2[0];const daysW=Object.keys(ST.expenses).filter(k=>k.startsWith(ST.curY+'-'+String(ST.curM+1).padStart(2,'0'))&&(ST.expenses[k]||[]).length>0).length;const avgDay=daysW>0?Math.round(tot/daysW):0;const saved=Math.max(0,bud-tot);const ln=ST.lang==='bn';let h='<div class="scard" style="padding:14px 16px"><div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:10px">'+(ln?'এই মাসের সারসংক্ষেপ':'Month at a glance')+'</div>';h+='<div class="ms-row"><span class="ms-label">'+(ln?'মোট খরচ':'Total spent')+'</span><span class="ms-val">'+fmt(tot)+'</span></div>';if(bud>0)h+='<div class="ms-row"><span class="ms-label">'+(ln?'বাজেটের মধ্যে?':'Within budget?')+'</span><span class="ms-val" style="color:'+(saved>0?'#5DCAA5':'#F09595')+'">'+(saved>0?(ln?'হ্যাঁ, '+fmt(saved)+' বাঁচলো':'Yes! Saved '+fmt(saved)):(ln?'না':'No'))+'</span></div>';if(topCat)h+='<div class="ms-row"><span class="ms-label">'+(ln?'সবচেয়ে বেশি':'Most spent on')+'</span><span class="ms-val">'+topCat[0]+' ('+fmt(topCat[1])+')</span></div>';if(avgDay>0)h+='<div class="ms-row"><span class="ms-label">'+(ln?'গড় দৈনিক':'Avg daily')+'</span><span class="ms-val">'+fmt(avgDay)+'</span></div>';h+='<div class="ms-row"><span class="ms-label">'+(ln?'কতদিন খরচ':'Days with expenses')+'</span><span class="ms-val">'+daysW+(ln?' দিন':' days')+'</span></div></div>';msc.innerHTML=h;}else if(msc)msc.innerHTML='';
-  // Cat summary
   const ct=catTots();const sorted=Object.entries(ct).sort((a,b)=>b[1]-a[1]);
   const cs=document.getElementById('catSum');
   if(cs){cs.innerHTML='';if(!sorted.length){cs.innerHTML='<div style="text-align:center;padding:18px;color:var(--text3);font-size:12px">'+t('nodata')+'</div>';}else{const max=sorted[0][1]||1;sorted.forEach(([cat,amt])=>{const p=Math.round(amt/max*100);const lim=ST.catLimits[cat];const col=lim&&amt>lim?'#E24B4A':'#1D9E75';const limTag=lim?'<span class="tag '+(amt>lim?'twarn':'tok')+'">'+(amt>lim?t('catover'):t('catok'))+'</span>':'';cs.innerHTML+='<div class="catrow"><span class="cname">'+cat+'</span><div class="ctrack"><div class="cfill" style="width:'+p+'%;background:'+col+'"></div></div><span class="camt">'+fmt(amt)+limTag+'</span></div>';});}}
@@ -783,7 +979,6 @@ function rChart(){
   const wrap=document.getElementById('spendChartWrap');
   const canvas=document.getElementById('spendChart');
   if(!wrap||!canvas)return;
-  // Build last 7 days data
   const labels=[];const data=[];const colors=[];
   const today=new Date();
   for(let i=6;i>=0;i--){
@@ -795,7 +990,6 @@ function rChart(){
     data.push(dayTotal);
     colors.push(dayTotal>0?'rgba(127,119,221,0.85)':'rgba(127,119,221,0.2)');
   }
-  // Destroy old chart
   if(window._spendChart)window._spendChart.destroy();
   window._spendChart=new Chart(canvas,{
     type:'bar',
@@ -810,6 +1004,7 @@ function rChart(){
     }
   });
 }
+
 function expCSV(){
   const rows=[['Date','Day','Amount','Category','Note']];
   const pfx=ST.curY+'-'+String(ST.curM+1).padStart(2,'0');
@@ -872,7 +1067,6 @@ function render(){
   _s('btnAdd',ST.lang==='bn'?'খরচ যোগ করো':'Add expense');
   _s('lblDlist',ST.lang==='bn'?'এই মাস — দিন অনুযায়ী':'This month — day by day');
   const tot=mTot();const bud=getBudget();const pct=bud>0?Math.min(100,Math.round(tot/bud*100)):0;
-  // Hero card
   _s('hLabel',M[ST.curM]+' '+ST.curY+(ST.lang==='bn'?' · মাসিক বাজেট':' · Monthly budget'));
   _s('hAmount',bud>0?fmt(bud):(ST.lang==='bn'?'বাজেট সেট করো →':'Set budget →'));
   _s('hPct',pct+'%');
@@ -884,9 +1078,7 @@ function render(){
   const dL=isCur()?dim()-new Date().getDate():0;
   _s('hLeftSub',dL>0?dL+' '+(ST.lang==='bn'?'দিন বাকি':'days left'):'');
   rIns('insD');rCatBtns();setDefaultDate();
-  // Empty toggle button
   const etb=document.getElementById('emptyBtn');if(etb)etb.textContent=showEmpty?(ST.lang==='bn'?'শুধু খরচের দিন':'Hide empty'):(ST.lang==='bn'?'সব দিন দেখাও':'Show all days');
-  // Day list
   const dIM=dim();const dl=document.getElementById('dayList');if(!dl)return;dl.innerHTML='';
   for(let d=dIM;d>=1;d--){
     const k=gk(ST.curY,ST.curM,d);const entries=ST.expenses[k]||[];
