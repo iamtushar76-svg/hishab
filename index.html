@@ -218,13 +218,24 @@ async function loadFromCloud(uid) {
   try {
     const ref = doc(db, 'users', uid, 'data', 'hishab');
     const snap = await getDoc(ref);
+    const local = localStorage.getItem('hishab_app');
+    const localData = local ? JSON.parse(local) : null;
+    const localExpCount = localData ? Object.keys(localData.expenses || {}).length : 0;
+
     if (snap.exists()) {
       const cloudData = snap.data();
-      // Merge: cloud data wins, but keep local categories if cloud has none
-      window._applyCloudData(cloudData);
+      const cloudExpCount = Object.keys(cloudData.expenses || {}).length;
+      if (localExpCount > cloudExpCount && localData) {
+        await saveToCloud(uid, localData);
+        setSyncStatus('ok', '✓ Data synced!');
+      } else {
+        window._applyCloudData(cloudData);
+      }
     } else {
-      // First time login — migrate localStorage data to cloud
-      await migrateLocalToCloud(uid);
+      if (localData && localExpCount > 0) {
+        await saveToCloud(uid, localData);
+        setSyncStatus('ok', '✓ Data migrated!');
+      }
     }
   } catch (e) {
     console.error('Load error:', e);
